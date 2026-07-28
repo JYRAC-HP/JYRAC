@@ -5,7 +5,7 @@ import Layout from "../layouts/Layout.astro";
 <Layout title="令和8年熊本地震 支援メンバー募集 | JYRAC" currentTab="news">
   <div class="notice-container">
     <div class="back-link-wrapper">
-      <a href="index.astro" class="back-link">➔ お知らせ一覧に戻る</a>
+      <a href="/" class="back-link">➔ トップページに戻る</a>
     </div>
 
     <header class="notice-header">
@@ -83,7 +83,7 @@ import Layout from "../layouts/Layout.astro";
     </div>
 
     <footer class="notice-footer">
-      <a href="index.astro" class="return-btn">お知らせ一覧へ戻る</a>
+      <a href="/" class="return-btn">トップページへ戻る</a>
     </footer>
   </div>
 </Layout>
@@ -165,10 +165,10 @@ import Layout from "../layouts/Layout.astro";
     font-size: 14px;
   }
 
-  /* 💡 ポスター全体を表示するためのスタイル修正箇所 */
+  /* ポスター全体を表示するためのスタイル */
   .notice-image-card {
     width: 100%;
-    max-width: 520px; /* パソコン表示時の幅 */
+    max-width: 520px;
     margin: 24px auto;
     border-radius: 12px;
     overflow: hidden;
@@ -179,9 +179,9 @@ import Layout from "../layouts/Layout.astro";
 
   .notice-image-card img {
     width: 100%;
-    height: auto; /* 高さの固定（max-height）を解除して縦比率を保つ */
+    height: auto;
     display: block;
-    object-fit: contain; /* トリミングせずに全体を収める */
+    object-fit: contain;
   }
 
   /* 情報ブロック */
