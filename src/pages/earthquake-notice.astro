@@ -1,37 +1,295 @@
-<div class="notice-image-container">
-  <img 
-    src="/kumamoto_image.jpg" 
-    alt="令和8年熊本地震 支援活動" 
-  />
-</div>
+---
+import Layout from "../layouts/Layout.astro";
+---
+
+<Layout title="令和8年熊本地震 支援メンバー募集 | JYRAC" currentTab="news">
+  <div class="notice-container">
+    <div class="back-link-wrapper">
+      <a href="/news" class="back-link">➔ お知らせ一覧に戻る</a>
+    </div>
+
+    <header class="notice-header">
+      <div class="meta-info">
+        <span class="badge-urgent">緊急募集</span>
+        <span class="notice-date">2026.07.28</span>
+      </div>
+      <h1 class="notice-title">【令和8年熊本地震 支援メンバー募集】</h1>
+    </header>
+
+    <div class="notice-body">
+      <p class="sympathy-box">
+        このたびの令和8年熊本地震により被災された皆様に、心よりお見舞い申し上げます。
+      </p>
+
+      <div class="notice-image-card">
+        <img 
+          src="/kumamoto_image.jpg" 
+          alt="令和8年熊本地震 支援活動" 
+        />
+      </div>
+
+      <p>
+        特定非営利活動法人 日本若者防災復興協会（JYRAC）では、令和8年熊本地震において若者・学生を中心とした支援募金プロジェクトの立ち上げを進めております。
+      </p>
+
+      <p>
+        現在、全国で支援活動にご協力いただける<strong>中学生・高校生・大学生等の若者メンバー</strong>を緊急募集しています。
+      </p>
+
+      <div class="info-block">
+        <h2>■ 主な活動内容</h2>
+        <ul>
+          <li>学校・生徒会等と連携した校内募金の企画・実施</li>
+          <li>各地域での街頭募金活動の企画・運営</li>
+          <li>設置型募金箱の導入・調整</li>
+          <li>広報・SNS発信・デザイン作成</li>
+          <li>運営・地域連携・調整業務 など</li>
+        </ul>
+      </div>
+
+      <p>
+        活動はオンラインでの打ち合わせを中心に進めるため、全国どこからでもご参加いただけます。防災活動やボランティアの経験は問いません。
+      </p>
+
+      <div class="info-block highlight-block">
+        <h2>■ 対象・参加方法</h2>
+        
+        <div class="detail-item">
+          <strong>【対象】</strong>
+          <p>中学生・高校生・大学生・若者世代</p>
+        </div>
+
+        <div class="detail-item">
+          <strong>【参加・お問い合わせ方法】</strong>
+          <p>
+            支援活動への参加希望やご相談は、下記メールアドレスまたは各種連絡先までお気軽にお問い合わせください。
+          </p>
+        </div>
+
+        <div class="btn-wrapper">
+          <a href="mailto:jyrac.pr@gmail.com" class="contact-btn">
+            メールで問い合わせ（jyrac.pr@gmail.com）
+          </a>
+        </div>
+      </div>
+
+      <p>
+        一人の力は小さくても、全国の若者が手を取り合うことで大きな支援の力になります。
+      </p>
+      <p>
+        皆様のご協力・ご参加を心よりお待ちしております。<br />
+        また、周囲の友人や学校等への周知・ご協力もよろしくお願いいたします。
+      </p>
+    </div>
+
+    <footer class="notice-footer">
+      <a href="/news" class="return-btn">お知らせ一覧へ戻る</a>
+    </footer>
+  </div>
+</Layout>
 
 <style>
-  /* 共通レイアウトのスタイルを強制上書きしてサイズを適正化 */
-  .notice-image-container {
-    width: 100% !important;
-    max-width: 450px !important; /* 横幅の最大値 */
-    margin: 24px auto !important; /* 中央揃え */
-    border-radius: 16px !important;
-    overflow: hidden !important;
-    border: 1px solid #e2e8f0 !important;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05) !important;
+  /* JYRACレイアウト専用のスタイル指定 */
+  .notice-container {
+    padding: 10px 0;
   }
 
-  .notice-image-container img {
-    width: 100% !important;
-    height: auto !important;
-    max-height: 260px !important; /* 高さは最大260pxまでに制限 */
-    object-fit: cover !important;
-    display: block !important;
+  .back-link-wrapper {
+    margin-bottom: 20px;
   }
 
-  /* スマホ表示の調整 */
+  .back-link {
+    color: #5b6779;
+    font-size: 13px;
+    font-weight: 700;
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+
+  .back-link:hover {
+    color: #009aa6;
+  }
+
+  .notice-header {
+    border-bottom: 2px solid rgba(0, 154, 166, 0.15);
+    padding-bottom: 20px;
+    margin-bottom: 24px;
+  }
+
+  .meta-info {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 12px;
+  }
+
+  .badge-urgent {
+    background: #e53e3e;
+    color: #ffffff;
+    font-size: 11px;
+    font-weight: 800;
+    padding: 3px 10px;
+    border-radius: 6px;
+  }
+
+  .notice-date {
+    font-size: 13px;
+    color: #5b6779;
+    font-weight: 700;
+  }
+
+  .notice-title {
+    font-size: 22px;
+    font-weight: 800;
+    color: #002b54;
+    margin: 0;
+    line-height: 1.4;
+  }
+
+  .notice-body {
+    color: #2c3e50;
+    font-size: 15px;
+    line-height: 1.8;
+  }
+
+  .notice-body p {
+    margin-bottom: 18px;
+  }
+
+  .sympathy-box {
+    background: #f8fafc;
+    border-left: 4px solid #94a3b8;
+    padding: 16px;
+    border-radius: 8px;
+    color: #475569;
+    font-size: 14px;
+  }
+
+  /* 💡 画像サイズの完全制御（高さ・幅オーバーを防止） */
+  .notice-image-card {
+    width: 100%;
+    max-width: 480px;
+    margin: 24px auto;
+    border-radius: 16px;
+    overflow: hidden;
+    border: 1px solid rgba(0, 154, 166, 0.2);
+    box-shadow: 0 4px 15px rgba(0, 43, 84, 0.05);
+    background: #ffffff;
+  }
+
+  .notice-image-card img {
+    width: 100%;
+    height: auto;
+    max-height: 280px;
+    object-fit: cover;
+    display: block;
+  }
+
+  /* 情報ブロック */
+  .info-block {
+    background: #ffffff;
+    border: 1px solid rgba(0, 154, 166, 0.15);
+    border-radius: 16px;
+    padding: 24px;
+    margin: 24px 0;
+  }
+
+  .info-block h2 {
+    font-size: 16px;
+    font-weight: 800;
+    color: #002b54;
+    margin-top: 0;
+    margin-bottom: 16px;
+    padding-bottom: 8px;
+    border-bottom: 1px dashed rgba(0, 154, 166, 0.2);
+  }
+
+  .info-block ul {
+    margin: 0;
+    padding-left: 20px;
+    color: #4f5e71;
+  }
+
+  .info-block li {
+    margin-bottom: 8px;
+  }
+
+  .highlight-block {
+    background: rgba(0, 154, 166, 0.04);
+    border-color: rgba(0, 154, 166, 0.3);
+  }
+
+  .detail-item {
+    margin-bottom: 16px;
+  }
+
+  .detail-item strong {
+    color: #002b54;
+    display: block;
+    margin-bottom: 4px;
+  }
+
+  .detail-item p {
+    margin: 0;
+  }
+
+  .btn-wrapper {
+    margin-top: 20px;
+  }
+
+  .contact-btn {
+    display: inline-block;
+    background: #009aa6;
+    color: #ffffff;
+    font-weight: 700;
+    font-size: 14px;
+    padding: 12px 24px;
+    border-radius: 10px;
+    text-decoration: none;
+    transition: background 0.2s;
+  }
+
+  .contact-btn:hover {
+    background: #00818b;
+  }
+
+  .notice-footer {
+    margin-top: 40px;
+    padding-top: 24px;
+    border-top: 1px solid rgba(0, 154, 166, 0.15);
+    text-align: center;
+  }
+
+  .return-btn {
+    display: inline-block;
+    background: #002b54;
+    color: #ffffff;
+    font-weight: 700;
+    font-size: 14px;
+    padding: 12px 32px;
+    border-radius: 10px;
+    text-decoration: none;
+    transition: background 0.2s;
+  }
+
+  .return-btn:hover {
+    background: #0a3d6d;
+  }
+
   @media (max-width: 640px) {
-    .notice-image-container {
-      max-width: 100% !important;
+    .notice-title {
+      font-size: 18px;
     }
-    .notice-image-container img {
-      max-height: 200px !important;
+    .notice-image-card {
+      max-width: 100%;
+    }
+    .notice-image-card img {
+      max-height: 200px;
+    }
+    .contact-btn, .return-btn {
+      width: 100%;
+      box-sizing: border-box;
+      text-align: center;
     }
   }
 </style>
