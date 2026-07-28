@@ -24,7 +24,7 @@ import Layout from "../layouts/Layout.astro";
       <div class="notice-image-card">
         <img 
           src="/kumamoto_image.jpg" 
-          alt="令和8年熊本地震 支援活動" 
+          alt="令和8年熊本地震 支援活動 ポスター" 
         />
       </div>
 
@@ -165,24 +165,23 @@ import Layout from "../layouts/Layout.astro";
     font-size: 14px;
   }
 
-  /* 💡 画像サイズの完全制御（高さ・幅オーバーを防止） */
+  /* 💡 ポスター全体を表示するためのスタイル修正箇所 */
   .notice-image-card {
     width: 100%;
-    max-width: 480px;
+    max-width: 520px; /* パソコン表示時の幅 */
     margin: 24px auto;
-    border-radius: 16px;
+    border-radius: 12px;
     overflow: hidden;
     border: 1px solid rgba(0, 154, 166, 0.2);
-    box-shadow: 0 4px 15px rgba(0, 43, 84, 0.05);
+    box-shadow: 0 4px 15px rgba(0, 43, 84, 0.08);
     background: #ffffff;
   }
 
   .notice-image-card img {
     width: 100%;
-    height: auto;
-    max-height: 280px;
-    object-fit: cover;
+    height: auto; /* 高さの固定（max-height）を解除して縦比率を保つ */
     display: block;
+    object-fit: contain; /* トリミングせずに全体を収める */
   }
 
   /* 情報ブロック */
@@ -282,9 +281,6 @@ import Layout from "../layouts/Layout.astro";
     }
     .notice-image-card {
       max-width: 100%;
-    }
-    .notice-image-card img {
-      max-height: 200px;
     }
     .contact-btn, .return-btn {
       width: 100%;
