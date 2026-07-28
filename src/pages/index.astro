@@ -1,14 +1,14 @@
 ---
 import Layout from "../layouts/Layout.astro";
 
-// ニュース記事データ（熊本地震のみ詳細リンクあり）
+// ニュース記事データ（熊本地震のみ詳細ページへのリンクあり）
 const newsArticles = [
   {
     title: "【令和8年熊本地震 支援メンバー募集】当団体の対応および支援活動について",
     url: "/earthquake-notice",
     date: "2026.07.28",
     category: "緊急募集",
-    badgeType: "emergency", // バッジの種類: emergency | primary | secondary
+    badgeClass: "badge-urgent",
     hasLink: true,
     summary: "本日発生いたしました地震につきまして、当団体では学生・若者を中心とした支援募金プロジェクトの立ち上げを進めております。現在、全国で支援活動にご協力いただける中学生・高校生・大学生等のメンバーを緊急募集しています。"
   },
@@ -16,8 +16,8 @@ const newsArticles = [
     title: "特定非営利活動法人 日本若者防災復興協会 正式設立（登記完了）のお知らせ",
     url: "#",
     date: "2026.06.21",
-    category: "重要なお知らせ",
-    badgeType: "primary",
+    category: "お知らせ",
+    badgeClass: "badge-info",
     hasLink: false,
     summary: "特定非営利活動法人 日本若者防災復興協会は、法務局での設立登記手続きが完了し、正式に法人として設立いたしました。"
   },
@@ -26,97 +26,229 @@ const newsArticles = [
     url: "#",
     date: "2026.06.17",
     category: "お知らせ",
-    badgeType: "secondary",
+    badgeClass: "badge-info",
     hasLink: false,
     summary: "東京都より特定非営利活動法人 日本若者防災復興協会の設立が認証されましたことをご報告いたします。"
   }
 ];
 ---
 
-<Layout title="ホーム | JYRAC 日本若者防災復興協会" activeKey="home" showSplash>
-
-  <main class="max-w-4xl mx-auto px-4 py-12 md:py-16 space-y-10">
+<Layout title="ホーム | JYRAC 日本若者防災復興協会" currentTab="news">
+  <div class="news-page-container">
     
-    <header class="text-center space-y-3 max-w-2xl mx-auto pb-6 border-b border-slate-200">
-      <span class="inline-flex items-center gap-1.5 bg-blue-50 text-blue-700 text-xs font-extrabold px-3 py-1 rounded-full border border-blue-100 tracking-wider">
-        <span class="w-2 h-2 rounded-full bg-blue-600 animate-pulse"></span>
-        JYRAC NEWS & TOPICS
-      </span>
-      <h1 class="text-2xl md:text-3xl font-black text-slate-900 tracking-tight">
-        お知らせ・最新情報
-      </h1>
-      <p class="text-xs md:text-sm text-slate-500 font-medium">
-        特定非営利活動法人 日本若者防災復興協会の最新の活動情報をお届けします。
-      </p>
+    <header class="news-header">
+      <span class="sub-title">JYRAC NEWS & TOPICS</span>
+      <h1 class="main-title">お知らせ・最新情報</h1>
+      <p class="header-desc">特定非営利活動法人 日本若者防災復興協会の最新情報をお届けします。</p>
     </header>
 
-    <section class="grid grid-cols-1 gap-6">
+    <div class="news-list">
       {newsArticles.map((article) => (
         article.hasLink ? (
           /* 【緊急・リンクあり】カード */
-          <article class="group relative bg-white rounded-2xl p-6 md:p-8 border-2 border-red-200 hover:border-red-500 shadow-xs hover:shadow-md transition-all duration-200 flex flex-col justify-between gap-4">
-            <div class="space-y-3">
-              <div class="flex items-center gap-3 flex-wrap">
-                <span class="inline-flex items-center gap-1 bg-red-600 text-white text-xs font-black px-3 py-1 rounded-lg shadow-xs tracking-wider">
-                  <span class="w-1.5 h-1.5 rounded-full bg-white animate-ping"></span>
-                  {article.category}
-                </span>
-                <time class="text-xs md:text-sm text-slate-500 font-bold tracking-wide">
-                  {article.date}
-                </time>
-              </div>
-
-              <h2 class="text-lg md:text-xl font-black text-slate-900 leading-snug group-hover:text-red-600 transition-colors">
-                <a href={article.url} class="focus:outline-none focus:underline">
-                  <span class="absolute inset-0" aria-hidden="true"></span>
-                  {article.title}
-                </a>
-              </h2>
-
-              <p class="text-sm md:text-base text-slate-600 leading-relaxed font-medium">
-                {article.summary}
-              </p>
+          <div class="news-card card-urgent">
+            <div class="card-header">
+              <span class={`badge ${article.badgeClass}`}>{article.category}</span>
+              <span class="news-date">{article.date}</span>
             </div>
-
-            <div class="pt-2 flex items-center justify-end">
-              <span class="inline-flex items-center text-xs md:text-sm font-black text-red-600 group-hover:translate-x-1 transition-transform duration-200 gap-1.5">
-                詳細・募集要項を見る
-                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M14 5l7 7m0 0l-7 7m7-7H3"></path>
-                </svg>
-              </span>
-            </div>
-          </article>
-        ) : (
-          /* 【通常・重要】カード */
-          <article class="bg-slate-50/80 rounded-2xl p-6 md:p-7 border border-slate-200 shadow-xs space-y-3">
-            <div class="flex items-center gap-3 flex-wrap">
-              {article.badgeType === "primary" ? (
-                <span class="inline-flex items-center bg-blue-600 text-white text-xs font-extrabold px-3 py-0.5 rounded-lg shadow-2xs">
-                  {article.category}
-                </span>
-              ) : (
-                <span class="inline-flex items-center bg-slate-200 text-slate-700 text-xs font-bold px-3 py-0.5 rounded-lg">
-                  {article.category}
-                </span>
-              )}
-              <time class="text-xs md:text-sm text-slate-400 font-bold tracking-wide">
-                {article.date}
-              </time>
-            </div>
-
-            <h2 class="text-base md:text-lg font-bold text-slate-800 leading-snug">
-              {article.title}
+            <h2 class="card-title">
+              <a href={article.url}>{article.title}</a>
             </h2>
-
-            <p class="text-xs md:text-sm text-slate-600 leading-relaxed">
-              {article.summary}
-            </p>
-          </article>
+            <p class="card-summary">{article.summary}</p>
+            <div class="card-footer">
+              <a href={article.url} class="detail-link">
+                詳細・募集要項を見る ➔
+              </a>
+            </div>
+          </div>
+        ) : (
+          /* 【通常】カード */
+          <div class="news-card card-normal">
+            <div class="card-header">
+              <span class={`badge ${article.badgeClass}`}>{article.category}</span>
+              <span class="news-date">{article.date}</span>
+            </div>
+            <h2 class="card-title-normal">{article.title}</h2>
+            <p class="card-summary">{article.summary}</p>
+          </div>
         )
       ))}
-    </section>
+    </div>
 
-  </main>
-
+  </div>
 </Layout>
+
+<style>
+  /* JYRAC完全対応・崩れ防止専用CSS */
+  .news-page-container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px 0 40px 0;
+    box-sizing: border-box;
+  }
+
+  /* ヘッダー */
+  .news-header {
+    text-align: center;
+    padding-bottom: 24px;
+    margin-bottom: 32px;
+    border-bottom: 2px solid rgba(0, 154, 166, 0.15);
+  }
+
+  .sub-title {
+    display: inline-block;
+    font-size: 12px;
+    font-weight: 800;
+    color: #009aa6;
+    background: rgba(0, 154, 166, 0.08);
+    padding: 4px 12px;
+    border-radius: 20px;
+    letter-spacing: 0.05em;
+    margin-bottom: 8px;
+  }
+
+  .main-title {
+    font-size: 26px;
+    font-weight: 900;
+    color: #002b54;
+    margin: 6px 0;
+    line-height: 1.3;
+  }
+
+  .header-desc {
+    font-size: 13px;
+    color: #5b6779;
+    margin: 0;
+  }
+
+  /* ニュースカード一覧 */
+  .news-list {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .news-card {
+    border-radius: 16px;
+    padding: 24px;
+    box-sizing: border-box;
+    transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+  }
+
+  /* 緊急カード（赤） */
+  .card-urgent {
+    background: #ffffff;
+    border: 2px solid #e53e3e;
+    box-shadow: 0 4px 15px rgba(229, 62, 62, 0.08);
+  }
+
+  .card-urgent:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(229, 62, 62, 0.15);
+  }
+
+  /* 通常カード（グレー） */
+  .card-normal {
+    background: #f8fafc;
+    border: 1px solid rgba(0, 154, 166, 0.15);
+  }
+
+  /* カードヘッダー (バッジ & 日付) */
+  .card-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 12px;
+  }
+
+  .badge {
+    font-size: 11px;
+    font-weight: 800;
+    padding: 3px 10px;
+    border-radius: 6px;
+    letter-spacing: 0.03em;
+  }
+
+  .badge-urgent {
+    background-color: #e53e3e;
+    color: #ffffff;
+  }
+
+  .badge-info {
+    background-color: #002b54;
+    color: #ffffff;
+  }
+
+  .news-date {
+    font-size: 13px;
+    font-weight: 700;
+    color: #718096;
+  }
+
+  /* タイトル */
+  .card-title {
+    font-size: 18px;
+    font-weight: 800;
+    margin: 0 0 10px 0;
+    line-height: 1.4;
+  }
+
+  .card-title a {
+    color: #002b54;
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+
+  .card-title a:hover {
+    color: #e53e3e;
+    text-decoration: underline;
+  }
+
+  .card-title-normal {
+    font-size: 16px;
+    font-weight: 800;
+    color: #2d3748;
+    margin: 0 0 10px 0;
+    line-height: 1.4;
+  }
+
+  /* サマリー文章 */
+  .card-summary {
+    font-size: 14px;
+    color: #4a5568;
+    line-height: 1.6;
+    margin: 0;
+  }
+
+  /* フッターリンク */
+  .card-footer {
+    margin-top: 16px;
+    text-align: right;
+  }
+
+  .detail-link {
+    display: inline-block;
+    font-size: 13px;
+    font-weight: 800;
+    color: #e53e3e;
+    text-decoration: none;
+    transition: opacity 0.2s;
+  }
+
+  .detail-link:hover {
+    opacity: 0.8;
+    text-decoration: underline;
+  }
+
+  @media (max-width: 640px) {
+    .news-card {
+      padding: 18px;
+    }
+    .main-title {
+      font-size: 20px;
+    }
+    .card-title {
+      font-size: 16px;
+    }
+  }
+</style>
