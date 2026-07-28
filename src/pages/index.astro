@@ -8,6 +8,7 @@ const newsArticles = [
     url: "/earthquake-notice",
     date: "2026.07.28",
     category: "緊急募集",
+    badgeType: "emergency", // バッジの種類: emergency | primary | secondary
     hasLink: true,
     summary: "本日発生いたしました地震につきまして、当団体では学生・若者を中心とした支援募金プロジェクトの立ち上げを進めております。現在、全国で支援活動にご協力いただける中学生・高校生・大学生等のメンバーを緊急募集しています。"
   },
@@ -15,7 +16,8 @@ const newsArticles = [
     title: "特定非営利活動法人 日本若者防災復興協会 正式設立（登記完了）のお知らせ",
     url: "#",
     date: "2026.06.21",
-    category: "お知らせ",
+    category: "重要なお知らせ",
+    badgeType: "primary",
     hasLink: false,
     summary: "特定非営利活動法人 日本若者防災復興協会は、法務局での設立登記手続きが完了し、正式に法人として設立いたしました。"
   },
@@ -24,6 +26,7 @@ const newsArticles = [
     url: "#",
     date: "2026.06.17",
     category: "お知らせ",
+    badgeType: "secondary",
     hasLink: false,
     summary: "東京都より特定非営利活動法人 日本若者防災復興協会の設立が認証されましたことをご報告いたします。"
   }
@@ -32,58 +35,86 @@ const newsArticles = [
 
 <Layout title="ホーム | JYRAC 日本若者防災復興協会" activeKey="home" showSplash>
 
-  <main class="max-w-4xl mx-auto px-4 py-10 space-y-12">
+  <main class="max-w-4xl mx-auto px-4 py-12 md:py-16 space-y-10">
     
-    <header class="border-b border-slate-200 pb-8 text-center space-y-3">
-      <p class="text-xs md:text-sm font-bold text-blue-600 tracking-wider">特定非営利活動法人 日本若者防災復興協会（JYRAC）</p>
-      <h1 class="text-2xl md:text-4xl font-black text-slate-900 leading-tight">
+    <header class="text-center space-y-3 max-w-2xl mx-auto pb-6 border-b border-slate-200">
+      <span class="inline-flex items-center gap-1.5 bg-blue-50 text-blue-700 text-xs font-extrabold px-3 py-1 rounded-full border border-blue-100 tracking-wider">
+        <span class="w-2 h-2 rounded-full bg-blue-600 animate-pulse"></span>
+        JYRAC NEWS & TOPICS
+      </span>
+      <h1 class="text-2xl md:text-3xl font-black text-slate-900 tracking-tight">
         お知らせ・最新情報
       </h1>
+      <p class="text-xs md:text-sm text-slate-500 font-medium">
+        特定非営利活動法人 日本若者防災復興協会の最新の活動情報をお届けします。
+      </p>
     </header>
 
-    <section class="space-y-6">
-      <div class="space-y-4">
-        {newsArticles.map((article) => (
-          article.hasLink ? (
-            <article class="bg-white border-2 border-red-200 rounded-2xl p-6 shadow-sm hover:border-red-500 transition duration-150 space-y-3">
+    <section class="grid grid-cols-1 gap-6">
+      {newsArticles.map((article) => (
+        article.hasLink ? (
+          /* 【緊急・リンクあり】カード */
+          <article class="group relative bg-white rounded-2xl p-6 md:p-8 border-2 border-red-200 hover:border-red-500 shadow-xs hover:shadow-md transition-all duration-200 flex flex-col justify-between gap-4">
+            <div class="space-y-3">
               <div class="flex items-center gap-3 flex-wrap">
-                <span class="bg-red-600 text-white text-xs font-bold px-2.5 py-1 rounded">
+                <span class="inline-flex items-center gap-1 bg-red-600 text-white text-xs font-black px-3 py-1 rounded-lg shadow-xs tracking-wider">
+                  <span class="w-1.5 h-1.5 rounded-full bg-white animate-ping"></span>
                   {article.category}
                 </span>
-                <time class="text-xs md:text-sm text-slate-500 font-bold">{article.date}</time>
+                <time class="text-xs md:text-sm text-slate-500 font-bold tracking-wide">
+                  {article.date}
+                </time>
               </div>
-              <h2 class="text-lg md:text-xl font-bold text-slate-950 leading-snug">
-                <a href={article.url} class="hover:text-red-600 transition duration-150">
+
+              <h2 class="text-lg md:text-xl font-black text-slate-900 leading-snug group-hover:text-red-600 transition-colors">
+                <a href={article.url} class="focus:outline-none focus:underline">
+                  <span class="absolute inset-0" aria-hidden="true"></span>
                   {article.title}
                 </a>
               </h2>
-              <p class="text-sm text-slate-600 leading-relaxed font-medium">
+
+              <p class="text-sm md:text-base text-slate-600 leading-relaxed font-medium">
                 {article.summary}
               </p>
-              <div class="pt-2">
-                <a href={article.url} class="inline-flex items-center text-xs md:text-sm font-bold text-red-600 hover:underline gap-1">
-                  詳細・募集要項を見る ➔
-                </a>
-              </div>
-            </article>
-          ) : (
-            <article class="bg-slate-50 border border-slate-200 rounded-2xl p-6 space-y-2">
-              <div class="flex items-center gap-3 flex-wrap">
-                <span class="bg-slate-200 text-slate-700 text-xs font-bold px-2.5 py-0.5 rounded">
+            </div>
+
+            <div class="pt-2 flex items-center justify-end">
+              <span class="inline-flex items-center text-xs md:text-sm font-black text-red-600 group-hover:translate-x-1 transition-transform duration-200 gap-1.5">
+                詳細・募集要項を見る
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M14 5l7 7m0 0l-7 7m7-7H3"></path>
+                </svg>
+              </span>
+            </div>
+          </article>
+        ) : (
+          /* 【通常・重要】カード */
+          <article class="bg-slate-50/80 rounded-2xl p-6 md:p-7 border border-slate-200 shadow-xs space-y-3">
+            <div class="flex items-center gap-3 flex-wrap">
+              {article.badgeType === "primary" ? (
+                <span class="inline-flex items-center bg-blue-600 text-white text-xs font-extrabold px-3 py-0.5 rounded-lg shadow-2xs">
                   {article.category}
                 </span>
-                <time class="text-xs md:text-sm text-slate-400 font-bold">{article.date}</time>
-              </div>
-              <h2 class="text-base md:text-lg font-bold text-slate-800 leading-snug">
-                {article.title}
-              </h2>
-              <p class="text-xs md:text-sm text-slate-600 leading-relaxed">
-                {article.summary}
-              </p>
-            </article>
-          )
-        ))}
-      </div>
+              ) : (
+                <span class="inline-flex items-center bg-slate-200 text-slate-700 text-xs font-bold px-3 py-0.5 rounded-lg">
+                  {article.category}
+                </span>
+              )}
+              <time class="text-xs md:text-sm text-slate-400 font-bold tracking-wide">
+                {article.date}
+              </time>
+            </div>
+
+            <h2 class="text-base md:text-lg font-bold text-slate-800 leading-snug">
+              {article.title}
+            </h2>
+
+            <p class="text-xs md:text-sm text-slate-600 leading-relaxed">
+              {article.summary}
+            </p>
+          </article>
+        )
+      ))}
     </section>
 
   </main>
