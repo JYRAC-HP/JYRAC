@@ -1,22 +1,28 @@
 ---
 import Layout from "../layouts/Layout.astro";
 
-// Note記事データ（ビルド落ちを防ぐため一時的にダミーデータを安全に設定）
-const articles = [
+// ニュース記事データ（熊本地震のみリンクあり）
+const newsArticles = [
   {
-    title: "【活動報告】全国の学生とともに取り組む防災啓発活動",
-    url: "https://note.com",
-    pubDate: "2026.07.20"
+    title: "【令和8年熊本地震 支援メンバー募集】当団体の対応および支援活動について",
+    url: "/earthquake-notice",
+    date: "2026.07.28",
+    category: "緊急募集",
+    hasLink: true
   },
   {
-    title: "被災地支援における若者の役割と今後の展望",
-    url: "https://note.com",
-    pubDate: "2026.07.10"
+    title: "特定非営利活動法人 日本若者防災復興協会 正式設立（登記完了）のお知らせ",
+    url: "#",
+    date: "2026.06.21",
+    category: "お知らせ",
+    hasLink: false
   },
   {
-    title: "特定非営利活動法人 日本若者防災復興協会 設立のお知らせ",
-    url: "https://note.com",
-    pubDate: "2026.06.21"
+    title: "特定非営利活動法人 日本若者防災復興協会 設立（認証されました）のお知らせ",
+    url: "#",
+    date: "2026.06.17",
+    category: "お知らせ",
+    hasLink: false
   }
 ];
 ---
@@ -144,18 +150,31 @@ const articles = [
     </div>
   </section>
 
-  <section id="note" class="py-20 border-t border-slate-200 bg-white">
+  <section id="news" class="py-20 border-t border-slate-200 bg-white">
     <div class="max-w-5xl mx-auto px-4">
       <div class="text-center mb-12">
-        <span class="text-xs font-bold text-blue-600 tracking-widest block mb-2 uppercase">NOTE</span>
-        <h2 class="text-2xl md:text-3xl font-black text-slate-950">公式Note・活動記事</h2>
+        <span class="text-xs font-bold text-blue-600 tracking-widest block mb-2 uppercase">NEWS</span>
+        <h2 class="text-2xl md:text-3xl font-black text-slate-950">新着情報・お知らせ</h2>
       </div>
-      <div id="note-list" class="grid grid-cols-1 md:grid-cols-3 gap-8">
-        {articles.map((article) => (
-          <a href={article.url} target="_blank" rel="noopener noreferrer" class="block p-6 bg-slate-50 rounded-2xl border border-slate-200 hover:border-blue-500 transition duration-200">
-            <span class="text-xs text-slate-400 font-bold block mb-2">{article.pubDate}</span>
-            <h3 class="text-base font-bold text-slate-950 line-clamp-2">{article.title}</h3>
-          </a>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+        {newsArticles.map((article) => (
+          article.hasLink ? (
+            <a href={article.url} class="block p-6 bg-slate-50 rounded-2xl border border-slate-200 hover:border-blue-500 transition duration-200 shadow-xs group">
+              <div class="flex items-center justify-between mb-3">
+                <span class="text-xs text-slate-500 font-bold">{article.date}</span>
+                <span class="bg-red-100 text-red-700 text-[10px] font-bold px-2 py-0.5 rounded-full">{article.category}</span>
+              </div>
+              <h3 class="text-sm md:text-base font-bold text-slate-950 line-clamp-2 leading-snug group-hover:text-blue-600 transition-colors">{article.title}</h3>
+            </a>
+          ) : (
+            <div class="block p-6 bg-slate-50/60 rounded-2xl border border-slate-200 shadow-xs cursor-default">
+              <div class="flex items-center justify-between mb-3">
+                <span class="text-xs text-slate-400 font-bold">{article.date}</span>
+                <span class="bg-slate-200 text-slate-600 text-[10px] font-bold px-2 py-0.5 rounded-full">{article.category}</span>
+              </div>
+              <h3 class="text-sm md:text-base font-bold text-slate-700 line-clamp-2 leading-snug">{article.title}</h3>
+            </div>
+          )
         ))}
       </div>
     </div>
@@ -180,6 +199,7 @@ const articles = [
       </div>
     </div>
   </section>
+
 </Layout>
 
 <style>
