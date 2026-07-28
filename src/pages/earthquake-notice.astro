@@ -1,110 +1,37 @@
----
-import Layout from "../layouts/Layout.astro";
----
+<div class="notice-image-container">
+  <img 
+    src="/kumamoto_image.jpg" 
+    alt="令和8年熊本地震 支援活動" 
+  />
+</div>
 
-<Layout title="令和8年熊本地震 支援メンバー募集 | JYRAC" currentTab="news">
-  <main class="py-12 md:py-20 max-w-4xl mx-auto px-4">
-    <div class="mb-8">
-      <a href="/news" class="inline-flex items-center text-xs md:text-sm text-slate-500 hover:text-blue-600 transition duration-150">
-        ➔ お知らせ一覧に戻る
-      </a>
-    </div>
+<style>
+  /* 共通レイアウトのスタイルを強制上書きしてサイズを適正化 */
+  .notice-image-container {
+    width: 100% !important;
+    max-width: 450px !important; /* 横幅の最大値 */
+    margin: 24px auto !important; /* 中央揃え */
+    border-radius: 16px !important;
+    overflow: hidden !important;
+    border: 1px solid #e2e8f0 !important;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05) !important;
+  }
 
-    <article class="bg-white border border-slate-200 rounded-3xl p-6 md:p-12 shadow-xs space-y-8">
-      <header class="border-b border-slate-100 pb-6 space-y-4">
-        <div class="flex items-center gap-3 flex-wrap">
-          <span class="bg-red-600 text-white text-xs font-extrabold px-3 py-1 rounded-md tracking-wider">
-            緊急募集
-          </span>
-          <time class="text-xs md:text-sm text-slate-500 font-bold">2026.07.28</time>
-        </div>
-        <h1 class="text-2xl md:text-4xl font-black text-slate-950 leading-tight">
-          【令和8年熊本地震 支援メンバー募集】
-        </h1>
-      </header>
+  .notice-image-container img {
+    width: 100% !important;
+    height: auto !important;
+    max-height: 260px !important; /* 高さは最大260pxまでに制限 */
+    object-fit: cover !important;
+    display: block !important;
+  }
 
-      <div class="space-y-6 text-slate-700 text-sm md:text-base leading-relaxed font-medium">
-        <p class="bg-slate-50 p-4 rounded-xl text-slate-600 border-l-4 border-slate-400">
-          このたびの令和8年熊本地震により被災された皆様に、心よりお見舞い申し上げます。
-        </p>
-
-        <div class="my-6 max-w-lg mx-auto overflow-hidden rounded-2xl border border-slate-200 shadow-sm bg-slate-50">
-          <img 
-            src="/kumamoto_image.jpg" 
-            alt="令和8年熊本地震 支援活動" 
-            class="w-full h-auto max-h-[320px] object-cover block"
-          />
-        </div>
-
-        <p>
-          特定非営利活動法人 日本若者防災復興協会（JYRAC）では、令和8年熊本地震において若者・学生を中心とした支援募金プロジェクトの立ち上げを進めております。
-        </p>
-
-        <p>
-          現在、全国で支援活動にご協力いただける<strong>中学生・高校生・大学生等の若者メンバー</strong>を緊急募集しています。
-        </p>
-
-        <div class="bg-slate-50 rounded-2xl p-6 border border-slate-200/80 space-y-4">
-          <h2 class="text-base md:text-lg font-bold text-slate-900 border-b border-slate-200 pb-2 flex items-center gap-2">
-            <span class="text-blue-600">■</span> 主な活動内容
-          </h2>
-          <ul class="list-disc list-inside space-y-2 text-slate-700">
-            <li>学校・生徒会等と連携した校内募金の企画・実施</li>
-            <li>各地域での街頭募金活動の企画・運営</li>
-            <li>設置型募金箱の導入・調整</li>
-            <li>広報・SNS発信・デザイン作成</li>
-            <li>運営・地域連携・調整業務 など</li>
-          </ul>
-        </div>
-
-        <p>
-          活動はオンラインでの打ち合わせを中心に進めるため、全国どこからでもご参加いただけます。防災活動やボランティアの経験は問いません。
-        </p>
-
-        <div class="bg-blue-50/60 rounded-2xl p-6 border border-blue-100 space-y-4">
-          <h2 class="text-base md:text-lg font-bold text-slate-900 border-b border-blue-200/60 pb-2 flex items-center gap-2">
-            <span class="text-blue-600">■</span> 対象・参加方法
-          </h2>
-          
-          <div>
-            <span class="font-bold text-slate-900 block mb-1">【対象】</span>
-            <p>中学生・高校生・大学生・若者世代</p>
-          </div>
-
-          <div>
-            <span class="font-bold text-slate-900 block mb-1">【参加・お問い合わせ方法】</span>
-            <p>
-              支援活動への参加希望やご相談は、下記メールアドレスまたは各種連絡先までお気軽にお問い合わせください。
-            </p>
-          </div>
-
-          <div class="pt-4 flex flex-col sm:flex-row gap-3">
-            <a 
-              href="mailto:jyrac.pr@gmail.com" 
-              class="inline-flex items-center justify-center bg-blue-600 hover:bg-blue-700 text-white font-bold text-sm px-6 py-3 rounded-xl transition duration-150 shadow-xs gap-2"
-            >
-              <span>メールで問い合わせ（jyrac.pr@gmail.com）</span>
-            </a>
-          </div>
-        </div>
-
-        <p class="pt-2">
-          一人の力は小さくても、全国の若者が手を取り合うことで大きな支援の力になります。
-        </p>
-        <p>
-          皆様のご協力・ご参加を心よりお待ちしております。<br />
-          また、周囲の友人や学校等への周知・ご協力もよろしくお願いいたします。
-        </p>
-      </div>
-
-      <footer class="pt-8 border-t border-slate-100 flex justify-center gap-4">
-        <a 
-          href="/news" 
-          class="inline-flex items-center justify-center bg-slate-800 hover:bg-slate-900 text-white font-bold text-sm px-8 py-3 rounded-xl transition duration-150"
-        >
-          お知らせ一覧へ戻る
-        </a>
-      </footer>
-    </article>
-  </main>
-</Layout>
+  /* スマホ表示の調整 */
+  @media (max-width: 640px) {
+    .notice-image-container {
+      max-width: 100% !important;
+    }
+    .notice-image-container img {
+      max-height: 200px !important;
+    }
+  }
+</style>
