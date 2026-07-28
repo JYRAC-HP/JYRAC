@@ -1,114 +1,259 @@
 ---
-import Layout from '../layouts/Layout.astro';
+import Layout from "../layouts/Layout.astro";
+import NoteCard from "../components/NoteCard.astro";
+import { getLatestNoteArticles } from "../lib/notes";
 
-// CMSがない状態でも安全に動作する初期データ
-const cmsNews = null; 
-
-const externalNews = cmsNews || [
-  {
-    date: "2026.07.15",
-    label: "重要",
-    title: "【設立登記完了】特定非営利活動法人日本若者防災復興協会として正式に成立いたしました。",
-    content: "本日、東京法務局における設立登記手続きが無事に完了いたしました。これにより、当団体は令和8年6月21日を成立日とし、法人格を有する「特定非営利活動法人 日本若者防災復興協会（JYRAC）」として正式にスタートいたしました。若者が主体となる防災・復興活動のさらなるアップデートに向け、より一層尽力してまいります。"
-  },
-  {
-    date: "2026.06.17",
-    label: "お知らせ",
-    title: "東京都よりNPO法人の設立認証を受け、登記申請手続きを開始しました。",
-    content: "東京都知事より特定非営利活動法人（NPO法人）の設立認証を正式に受けました。東京法務局にて設立登記の申請手続きを進めております。"
-  },
-  {
-    date: "2026.04.10",
-    label: "重要",
-    title: "東京都へ特定非営利活動法人（NPO法人）の設立認証申請を行いました。",
-    content: "所轄庁である東京都へ特定非営利活動法人の認証申請書類一式を正式に提出いたしました。"
-  }
-];
+// SSR: リクエストごとにNoteの最新記事を取得する(ビルド時固定ではない)
+const articles = await getLatestNoteArticles(3);
 ---
 
-<Layout title="日本若者防災復興協会" currentTab="news">
-    <div class="content-panel">
-        <h2>新着情報・お知らせ一覧</h2>
-        {externalNews && externalNews.length > 0 ? (
-            <ul class="news-list">
-                {externalNews.map((item, index) => (
-                    <li class="news-item">
-                        <div class="news-header">
-                            <span class="news-date">{item.date}</span>
-                            <span class="news-label" style={item.label === '重要' ? 'background: #e67e22;' : 'background: #009aa6;'}>{item.label}</span>
-                            <span class="news-title">{item.title}</span>
-                            <span class="news-icon"></span>
-                        </div>
-                        <div class="news-body">
-                            <div class="news-body-inner" set:html={item.content}></div>
-                        </div>
-                    </li>
-                ))}
-            </ul>
-        ) : (
-            <p style="color: #7f8c8d; text-align: center; padding: 40px 0;">現在、新しいお知らせはありません。</p>
-        )}
+<Layout title="ホーム | JYRAC 日本若者防災復興協会" activeKey="home" showSplash>
+
+  <div class="emergency-banner">
+    <div class="emergency-inner">
+      <div class="emergency-header">
+        <span class="emergency-badge">緊急募集</span>
+        <span class="emergency-date">2026.07.28</span>
+      </div>
+      <div class="emergency-content">
+        <a href="/earthquake-notice" class="emergency-link">
+          <h3 class="emergency-title">【令和8年熊本地震 支援メンバー募集】当団体の対応および支援活動について</h3>
+          <p class="emergency-text">
+            本日発生いたしました地震につきまして、当団体では学生・若者を中心とした支援募金プロジェクトの立ち上げを進めております。現在、全国で支援活動にご協力いただける中学生・高校生・大学生等のメンバーを緊急募集しています。
+          </p>
+          <span class="emergency-btn">募集要項・詳細を見る ➔</span>
+        </a>
+      </div>
     </div>
+  </div>
+
+  <section class="relative h-[550px] flex items-center justify-center bg-slate-950 text-white text-center overflow-hidden">
+    <img src="/NSF_.JPG" alt="街頭募金活動の様子" class="absolute inset-0 w-full h-full object-cover object-center opacity-45">
+    <div class="absolute inset-0 bg-gradient-to-t from-blue-950/80 via-slate-900/50 to-blue-950/30"></div>
+    <div class="relative z-10 max-w-4xl mx-auto px-4">
+      <div class="flex justify-center space-x-8 md:space-x-16 text-xl md:text-3xl font-black tracking-widest text-orange-400 mb-6 drop-shadow-md">
+        <span>まなぶ。</span><span>つなぐ。</span><span>そなえる。</span>
+      </div>
+      
+      <h1 class="text-3xl md:text-5xl font-black leading-tight mb-4 tracking-wide drop-shadow-lg break-keep select-none">
+        <span class="inline-block">若者の力で被災地支援と</span>
+        <br />
+        <span class="inline-block">防災の未来を切り拓く</span>
+      </h1>
+      
+      <p class="text-xs md:text-sm text-slate-200 max-w-xl mx-auto tracking-wider font-medium opacity-90">
+        特定非営利活動法人 日本若者防災復興協会（JYRAC）
+      </p>
+    </div>
+  </section>
+
+  <section class="py-20 max-w-4xl mx-auto px-4 text-center">
+    <span class="text-xs font-bold text-blue-600 tracking-widest block mb-2 uppercase">OUR MISSION</span>
+    <h2 class="text-2xl md:text-4xl font-black text-slate-950 mb-6">震災前の当たり前を取り戻す。</h2>
+    <p class="text-slate-600 text-sm md:text-base leading-relaxed max-w-2xl mx-auto mb-8 font-medium">
+      全国の学生・若者が主体となって被災地を支援し、防災に対する意識を高める活動を展開しています。
+    </p>
+    <div class="flex justify-center">
+      <a href="/about" class="inline-flex items-center justify-center space-x-2 bg-blue-50 hover:bg-blue-100 text-blue-600 font-black text-sm md:text-base px-6 py-3 rounded-xl transition duration-200 group border border-blue-200/60 shadow-xs">
+        <span>当協会について詳しく知る</span>
+        <svg class="w-4 h-4 transition-transform duration-200 group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M13 7l5 5m0 0l-5 5m5-5H6"></path>
+        </svg>
+      </a>
+    </div>
+  </section>
+
+  <section class="pb-16 max-w-5xl mx-auto px-4">
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <div class="overflow-hidden rounded-3xl border border-slate-200 shadow-xs bg-slate-100 aspect-video md:aspect-[4/3]">
+        <img src="/unnamed.jpg" alt="活動の様子 1" class="w-full h-full object-cover hover:scale-105 transition duration-500">
+      </div>
+      <div class="overflow-hidden rounded-3xl border border-slate-200 shadow-xs bg-slate-100 aspect-video md:aspect-[4/3]">
+        <img src="/unnamed (1).jpg" alt="活動の様子 2" class="w-full h-full object-cover hover:scale-105 transition duration-500">
+      </div>
+    </div>
+  </section>
+
+  <section class="py-20 bg-slate-100 border-t border-b border-slate-200">
+    <div class="max-w-4xl mx-auto px-4 text-center space-y-6">
+      <span class="text-xs font-bold text-blue-600 tracking-widest block uppercase">WHAT WE DO</span>
+      <h2 class="text-xl md:text-3xl font-black text-slate-950 leading-tight">
+        被災地支援から日常の防災啓発まで、<br>
+        若者ならではの機動力を活かして活動しています。
+      </h2>
+      <p class="text-slate-600 text-sm md:text-base leading-relaxed max-w-3xl mx-auto font-medium text-left md:text-center">
+        日本若者防災復興協会（JYRAC）では、能登半島地震や熊本地震における街頭募金・校内募金などの支援活動をはじめ、災害大国と呼ばれる日本に生きる私たちが防災意識を高めるための情報発信や各種プロジェクトを企画・実施しています。
+      </p>
+    </div>
+  </section>
+
+  <section class="py-20 max-w-5xl mx-auto px-4 space-y-12">
+    <div class="text-center">
+      <span class="text-xs font-bold text-blue-600 tracking-widest block mb-2 uppercase">VISION</span>
+      <h2 class="text-2xl md:text-3xl font-black text-slate-950">私たちの未来の展望</h2>
+    </div>
+
+    <div class="space-y-12">
+      <div class="bg-white p-6 md:p-8 rounded-3xl border border-slate-200 shadow-xs flex flex-col md:flex-row items-center md:items-start space-y-6 md:space-y-0 md:space-x-8">
+        <div class="w-full md:w-72 h-80 md:h-96 rounded-2xl overflow-hidden bg-slate-100 flex-shrink-0 shadow-sm">
+          <img src="/p_logo/sousei.png" alt="地域の創生事業" class="w-full h-full object-cover">
+        </div>
+        <div class="flex-grow flex flex-col justify-start space-y-4 pt-2 text-center md:text-left">
+          <h3 class="text-2xl md:text-3xl font-black text-slate-950">地域復興・創生</h3>
+          <p class="text-sm md:text-base text-slate-600 leading-relaxed font-medium">
+            被災した地域を盛り上げる様々なプロジェクトを企画し、地域の伝統や魅力を発信するとともに復興・創生を目指します。
+          </p>
+          <div class="pt-4 flex justify-center md:justify-start">
+            <a href="/projects" class="inline-flex items-center justify-center bg-slate-800 hover:bg-slate-900 text-white font-bold text-xs md:text-sm px-5 py-2.5 rounded-lg shadow-sm transition duration-150 tracking-wider">
+              <span>PROJECTs一覧 ➔</span>
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <div class="bg-white p-6 md:p-8 rounded-3xl border border-slate-200 shadow-xs flex flex-col md:flex-row items-center md:items-start space-y-6 md:space-y-0 md:space-x-8">
+        <div class="w-full md:w-72 h-80 md:h-96 rounded-2xl overflow-hidden bg-slate-100 flex-shrink-0 shadow-sm">
+          <img src="/unnamed.jpg" alt="全国の学生が集結" class="w-full h-full object-cover">
+        </div>
+        <div class="flex-grow flex flex-col justify-start space-y-4 pt-2 text-center md:text-left">
+          <h3 class="text-2xl md:text-3xl font-black text-slate-950">全国の若者が集結</h3>
+          <p class="text-sm md:text-base text-slate-600 leading-relaxed font-medium">
+            全国から志を持った中学生・高校生・大学生が集まり、オンラインと現場の両面で活動を展開しています。
+          </p>
+          <div class="pt-4 flex justify-center md:justify-start">
+            <a href="/about" class="inline-flex items-center justify-center bg-slate-800 hover:bg-slate-900 text-white font-bold text-xs md:text-sm px-5 py-2.5 rounded-lg shadow-sm transition duration-150 tracking-wider">
+              <span>活動内容を見る ➔</span>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="note" class="py-20 border-t border-slate-200 bg-white">
+    <div class="max-w-5xl mx-auto px-4">
+      <div class="text-center mb-12">
+        <span class="text-xs font-bold text-blue-600 tracking-widest block mb-2 uppercase">NOTE</span>
+        <h2 class="text-2xl md:text-3xl font-black text-slate-950">公式Note・活動記事</h2>
+        <p class="text-xs text-slate-500 font-medium mt-1">Noteの記事を自動で取得して表示しています</p>
+      </div>
+      <div id="note-list" class="grid grid-cols-1 md:grid-cols-3 gap-8">
+        {articles.map((article) => (
+          <NoteCard article={article} />
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section id="instagram" class="py-16 bg-slate-100 border-t border-slate-200">
+    <div class="max-w-6xl mx-auto px-4">
+      <div class="text-center mb-10">
+        <h2 class="text-xl font-bold text-slate-950 mb-1">最新のInstagram活動報告</h2>
+        <p class="text-xs text-slate-500 font-medium">Instagramから6件を自動で並べています</p>
+      </div>
+      <div class="w-full">
+        <behold-widget feed-id="6GsUr7TV7peuDQ7JbdpG"></behold-widget>
+        <script>
+          (() => {
+            const d = document, s = d.createElement("script");
+            s.type = "module";
+            s.src = "https://w.behold.so/widget.js";
+            d.head.append(s);
+          })();
+        </script>
+      </div>
+    </div>
+  </section>
 </Layout>
 
 <style>
-  /* 💡 index.astro 専用のクリーンなスタイル指定 */
-  .content-panel {
-    padding: 10px 0;
+  /* ▼ 緊急お知らせ専用スタイル ▼ */
+  .emergency-banner {
+    background-color: #fff5f5;
+    border: 2px solid #e53e3e;
+    border-radius: 12px;
+    max-width: 1000px;
+    margin: 20px auto;
+    padding: 18px 22px;
+    box-shadow: 0 4px 12px rgba(229, 62, 62, 0.12);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
   }
-  h2 {
-    color: #002b54;
-    font-size: 20px;
-    font-weight: 800;
-    margin-top: 0;
-    margin-bottom: 30px;
-    border-left: 5px solid #009aa6;
-    padding-left: 15px;
+
+  .emergency-banner:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(229, 62, 62, 0.18);
   }
-  .news-list {
-    list-style: none;
-    padding: 0;
-    margin: 0;
+
+  .emergency-inner {
     display: flex;
     flex-direction: column;
-    gap: 16px;
+    gap: 8px;
   }
-  .news-item {
-    background: #ffffff;
-    border: 1px solid rgba(0, 154, 166, 0.15);
-    border-radius: 14px;
-    padding: 20px 24px;
-    box-shadow: 0 4px 15px rgba(0, 43, 84, 0.02);
-  }
-  .news-header {
+
+  .emergency-header {
     display: flex;
     align-items: center;
-    gap: 12px;
-    flex-wrap: wrap;
+    gap: 10px;
   }
-  .news-date {
-    font-size: 14px;
-    color: #5b6779;
-    font-weight: 700;
-  }
-  .news-label {
-    font-size: 11px;
+
+  .emergency-badge {
+    background-color: #e53e3e;
+    color: #ffffff;
+    font-size: 12px;
     font-weight: 800;
-    color: #fff;
-    padding: 2px 10px;
-    border-radius: 6px;
+    padding: 3px 8px;
+    border-radius: 4px;
+    letter-spacing: 0.05em;
   }
-  .news-title {
-    font-size: 15px;
+
+  .emergency-date {
+    font-size: 13px;
+    color: #718096;
     font-weight: 700;
-    color: #002b54;
   }
-  .news-body {
-    margin-top: 12px;
-    padding-top: 12px;
-    border-top: 1px dashed #e7e0d0;
-    color: #4f5e71;
+
+  .emergency-link {
+    text-decoration: none;
+    display: block;
+    color: inherit;
+  }
+
+  .emergency-title {
+    font-size: 18px;
+    font-weight: 800;
+    color: #9b2c2c;
+    margin: 4px 0 8px 0;
+    line-height: 1.4;
+  }
+
+  .emergency-link:hover .emergency-title {
+    text-decoration: underline;
+  }
+
+  .emergency-text {
     font-size: 14px;
-    line-height: 1.8;
+    color: #4a5568;
+    line-height: 1.6;
+    margin: 0 0 10px 0;
+  }
+
+  .emergency-btn {
+    display: inline-block;
+    font-size: 13px;
+    font-weight: 800;
+    color: #e53e3e;
+  }
+
+  @media (max-width: 640px) {
+    .emergency-banner {
+      margin: 15px;
+      padding: 14px;
+    }
+    .emergency-title {
+      font-size: 16px;
+    }
+    .emergency-text {
+      font-size: 13px;
+    }
   }
 </style>
