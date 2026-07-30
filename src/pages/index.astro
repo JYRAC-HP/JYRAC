@@ -1,7 +1,7 @@
 ---
 import Layout from "../layouts/Layout.astro";
 
-// ニュース記事データ（熊本地震のみ詳細ページへのリンクあり）
+// ニュース記事データ（熊本地震・メンバー募集にリンクあり）
 const newsArticles = [
   {
     title: "【令和8年熊本地震 支援メンバー募集】当団体の対応および支援活動について",
@@ -11,6 +11,15 @@ const newsArticles = [
     badgeClass: "badge-urgent",
     hasLink: true,
     summary: "本日発生いたしました地震につきまして、当団体では学生・若者を中心とした支援募金プロジェクトの立ち上げを進めております。現在、全国で支援活動にご協力いただける中学生・高校生・大学生等のメンバーを緊急募集しています。"
+  },
+  {
+    title: "【メンバー募集】広報・災害支援など各種プロジェクトの募集情報を更新しました",
+    url: "/recruitment",
+    date: "2026.07.30",
+    category: "募集",
+    badgeClass: "badge-recruitment",
+    hasLink: true,
+    summary: "日本若者防災復興協会（JYRAC）では、全国の中学生・高校生・大学生を中心とした若者メンバーを大募集しています。最新の募集要項はこちらからご確認いただけます。"
   },
   {
     title: "特定非営利活動法人 日本若者防災復興協会 正式設立（登記完了）のお知らせ",
@@ -45,8 +54,8 @@ const newsArticles = [
     <div class="news-list">
       {newsArticles.map((article) => (
         article.hasLink ? (
-          /* 【緊急・リンクあり】カード */
-          <div class="news-card card-urgent">
+          /* 【リンクあり】カード（ホバーでふわっと浮く） */
+          <div class={`news-card ${article.badgeClass === 'badge-urgent' ? 'card-urgent' : 'card-link'}`}>
             <div class="card-header">
               <span class={`badge ${article.badgeClass}`}>{article.category}</span>
               <span class="news-date">{article.date}</span>
@@ -57,12 +66,12 @@ const newsArticles = [
             <p class="card-summary">{article.summary}</p>
             <div class="card-footer">
               <a href={article.url} class="detail-link">
-                詳細・募集要項を見る ➔
+                詳細ページを見る ➔
               </a>
             </div>
           </div>
         ) : (
-          /* 【通常】カード */
+          /* 【通常・リンクなし】カード */
           <div class="news-card card-normal">
             <div class="card-header">
               <span class={`badge ${article.badgeClass}`}>{article.category}</span>
@@ -128,29 +137,55 @@ const newsArticles = [
     gap: 20px;
   }
 
+  /* 共通カードスタイル ＆ ふわっと浮くアニメーション設定 */
   .news-card {
     border-radius: 16px;
     padding: 24px;
     box-sizing: border-box;
-    transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+    transition: transform 0.3s cubic-bezier(0.165, 0.84, 0.44, 1), 
+                box-shadow 0.3s cubic-bezier(0.165, 0.84, 0.44, 1), 
+                border-color 0.3s ease;
+    will-change: transform, box-shadow;
   }
 
   /* 緊急カード（赤） */
   .card-urgent {
     background: #ffffff;
     border: 2px solid #e53e3e;
-    box-shadow: 0 4px 15px rgba(229, 62, 62, 0.08);
+    box-shadow: 0 4px 12px rgba(229, 62, 62, 0.08);
   }
 
   .card-urgent:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(229, 62, 62, 0.15);
+    transform: translateY(-6px);
+    box-shadow: 0 12px 28px rgba(229, 62, 62, 0.18);
+    border-color: #c53030;
   }
 
-  /* 通常カード（グレー） */
+  /* リンク付き通常カード（青枠ホバー） */
+  .card-link {
+    background: #ffffff;
+    border: 1.5px solid #009aa6;
+    box-shadow: 0 4px 12px rgba(0, 154, 166, 0.08);
+  }
+
+  .card-link:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 24px rgba(0, 154, 166, 0.18);
+    border-color: #002b54;
+  }
+
+  /* 通常カード（グレー・リンクなし） */
   .card-normal {
     background: #f8fafc;
     border: 1px solid rgba(0, 154, 166, 0.15);
+    box-shadow: 0 2px 8px rgba(0, 43, 84, 0.02);
+  }
+
+  .card-normal:hover {
+    transform: translateY(-4px);
+    background: #ffffff;
+    border-color: rgba(0, 154, 166, 0.4);
+    box-shadow: 0 8px 20px rgba(0, 43, 84, 0.08);
   }
 
   /* カードヘッダー (バッジ & 日付) */
@@ -161,22 +196,34 @@ const newsArticles = [
     margin-bottom: 12px;
   }
 
+  /* ★【グラデーションバッジ共通スタイル】★ */
   .badge {
     font-size: 11px;
     font-weight: 800;
-    padding: 3px 10px;
-    border-radius: 6px;
-    letter-spacing: 0.03em;
+    padding: 4px 12px;
+    border-radius: 20px;
+    letter-spacing: 0.04em;
+    color: #ffffff;
+    display: inline-block;
+    line-height: 1.2;
   }
 
+  /* 緊急募集：赤〜オレンジの立体グラデーション */
   .badge-urgent {
-    background-color: #e53e3e;
-    color: #ffffff;
+    background: linear-gradient(135deg, #ff4b4b 0%, #c53030 100%);
+    box-shadow: 0 2px 8px rgba(229, 62, 62, 0.35);
   }
 
+  /* 募集：エメラルド〜ターコイズのグラデーション */
+  .badge-recruitment {
+    background: linear-gradient(135deg, #00d2e0 0%, #008f9b 100%);
+    box-shadow: 0 2px 8px rgba(0, 180, 197, 0.35);
+  }
+
+  /* お知らせ：ディープネイビー〜ブルーのグラデーション */
   .badge-info {
-    background-color: #002b54;
-    color: #ffffff;
+    background: linear-gradient(135deg, #0a4f8f 0%, #002b54 100%);
+    box-shadow: 0 2px 8px rgba(0, 43, 84, 0.25);
   }
 
   .news-date {
@@ -200,7 +247,7 @@ const newsArticles = [
   }
 
   .card-title a:hover {
-    color: #e53e3e;
+    color: #009aa6;
     text-decoration: underline;
   }
 
@@ -230,14 +277,15 @@ const newsArticles = [
     display: inline-block;
     font-size: 13px;
     font-weight: 800;
-    color: #e53e3e;
+    color: #009aa6;
     text-decoration: none;
-    transition: opacity 0.2s;
+    transition: transform 0.2s ease, opacity 0.2s ease;
   }
 
   .detail-link:hover {
     opacity: 0.8;
     text-decoration: underline;
+    transform: translateX(3px);
   }
 
   @media (max-width: 640px) {
