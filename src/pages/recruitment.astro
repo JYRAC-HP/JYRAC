@@ -1,0 +1,243 @@
+---
+import Layout from "../layouts/Layout.astro";
+
+// 募集中の職種一覧データ
+const recruitList = [
+  {
+    title: "【広報スタッフ募集】「伝える力」で、若者の防災・減災アクションを社会へ",
+    department: "広報プロジェクト",
+    url: "/join-pr",
+    status: "募集中",
+    type: "オンライン可 / 全国",
+    summary: "SNS（Instagram・X・Note等）の運用やWebサイトの更新、デザイン制作などを通じて、当法人の活動を全国へ発信するメンバーを募集しています！"
+  },
+  {
+    title: "【令和8年熊本地震 支援メンバー募集】当団体の対応および支援活動について",
+    department: "災害支援プロジェクト",
+    url: "/earthquake-notice",
+    status: "緊急募集",
+    type: "現場・オンライン",
+    summary: "令和8年熊本地震における支援募金プロジェクトの立ち上げ・校内募金・街頭募金などに協力いただける中高生・大学生等のメンバーを急募しています。"
+  }
+];
+---
+
+<Layout title="メンバー募集 | JYRAC 日本若者防災復興協会" currentTab="recruitment">
+  <div class="recruitment-container">
+    
+    <header class="page-header">
+      <span class="sub-tag">JOIN US</span>
+      <h1 class="main-title">メンバー募集</h1>
+      <p class="header-desc">
+        日本若者防災復興協会（JYRAC）では、全国の中学生・高校生・大学生を中心とした若者メンバーを募集しています。
+      </p>
+    </header>
+
+    <div class="notice-info-box">
+      <div class="notice-icon">📢</div>
+      <div class="notice-text">
+        <strong>【今後の募集について】</strong><br />
+        現在掲載している募集のほか、各事業・各プロジェクトの募集要項につきましても<b>随時更新・公開していきます</b>。最新情報は本ページまたは公式SNSをご確認ください。
+      </div>
+    </div>
+
+    <div class="recruit-list">
+      {recruitList.map((item) => (
+        <div class="recruit-card">
+          <div class="card-meta">
+            <span class={`status-badge ${item.status === '緊急募集' ? 'urgent' : 'normal'}`}>
+              {item.status}
+            </span>
+            <span class="department-tag">{item.department}</span>
+            <span class="type-tag">{item.type}</span>
+          </div>
+          
+          <h2 class="card-title">{item.title}</h2>
+          <p class="card-summary">{item.summary}</p>
+          
+          <div class="card-action">
+            <a href={item.url} class="detail-btn">
+              募集要項・詳細を見る ➔
+            </a>
+          </div>
+        </div>
+      ))}
+    </div>
+
+  </div>
+</Layout>
+
+<style>
+  .recruitment-container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 10px 0 40px 0;
+  }
+
+  /* ヘッダー */
+  .page-header {
+    text-align: center;
+    padding-bottom: 24px;
+    margin-bottom: 24px;
+    border-bottom: 2px solid rgba(0, 154, 166, 0.15);
+  }
+
+  .sub-tag {
+    display: inline-block;
+    font-size: 12px;
+    font-weight: 800;
+    color: #009aa6;
+    background: rgba(0, 154, 166, 0.08);
+    padding: 4px 12px;
+    border-radius: 20px;
+    letter-spacing: 0.05em;
+    margin-bottom: 8px;
+  }
+
+  .main-title {
+    font-size: 26px;
+    font-weight: 900;
+    color: #002b54;
+    margin: 6px 0;
+  }
+
+  .header-desc {
+    font-size: 13.5px;
+    color: #5b6779;
+    margin: 0;
+    line-height: 1.6;
+  }
+
+  /* お知らせ注記ボックス */
+  .notice-info-box {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    background: #f0f9fa;
+    border: 1px solid rgba(0, 154, 166, 0.3);
+    border-radius: 12px;
+    padding: 16px 20px;
+    margin-bottom: 32px;
+  }
+
+  .notice-icon {
+    font-size: 20px;
+    line-height: 1;
+    flex-shrink: 0;
+  }
+
+  .notice-text {
+    font-size: 13px;
+    color: #002b54;
+    line-height: 1.6;
+  }
+
+  /* 募集カード一覧 */
+  .recruit-list {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .recruit-card {
+    background: #ffffff;
+    border: 1px solid rgba(0, 154, 166, 0.2);
+    border-radius: 16px;
+    padding: 24px;
+    box-shadow: 0 4px 15px rgba(0, 43, 84, 0.03);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+
+  .recruit-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(0, 43, 84, 0.08);
+  }
+
+  /* メタ情報（タグ・ステータス） */
+  .card-meta {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-bottom: 12px;
+  }
+
+  .status-badge {
+    font-size: 11px;
+    font-weight: 800;
+    padding: 3px 10px;
+    border-radius: 6px;
+  }
+
+  .status-badge.urgent {
+    background-color: #e53e3e;
+    color: #ffffff;
+  }
+
+  .status-badge.normal {
+    background-color: #f27824;
+    color: #ffffff;
+  }
+
+  .department-tag, .type-tag {
+    font-size: 11px;
+    font-weight: 700;
+    background: #f1f5f9;
+    color: #475569;
+    padding: 3px 10px;
+    border-radius: 6px;
+  }
+
+  /* タイトル＆概要 */
+  .card-title {
+    font-size: 18px;
+    font-weight: 800;
+    color: #002b54;
+    margin: 0 0 10px 0;
+    line-height: 1.4;
+  }
+
+  .card-summary {
+    font-size: 13.5px;
+    color: #4a5568;
+    line-height: 1.6;
+    margin: 0 0 16px 0;
+  }
+
+  /* ボタン */
+  .card-action {
+    text-align: right;
+  }
+
+  .detail-btn {
+    display: inline-block;
+    background: linear-gradient(135deg, #00b4c5 0%, #0093a2 100%);
+    color: #ffffff !important;
+    text-decoration: none;
+    font-size: 13px;
+    font-weight: bold;
+    padding: 10px 20px;
+    border-radius: 6px;
+    transition: all 0.2s ease;
+    box-shadow: 0 2px 8px rgba(0, 180, 197, 0.25);
+  }
+
+  .detail-btn:hover {
+    background: linear-gradient(135deg, #0c3866 0%, #082647 100%);
+    transform: translateY(-1px);
+  }
+
+  @media (max-width: 640px) {
+    .recruit-card {
+      padding: 18px;
+    }
+    .card-title {
+      font-size: 16px;
+    }
+    .detail-btn {
+      width: 100%;
+      text-align: center;
+      box-sizing: border-box;
+    }
+  }
+</style>
