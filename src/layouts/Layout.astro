@@ -1,7 +1,7 @@
 ---
 interface Props {
   title: string;
-  currentTab: 'news' | 'about' | 'services' | 'governance' | 'sns' | 'contact' | 'gioco'; 
+  currentTab: 'news' | 'about' | 'services' | 'recruitment' | 'governance' | 'sns' | 'contact' | 'gioco'; 
 }
 
 const { title, currentTab } = Astro.props;
@@ -223,7 +223,6 @@ const { title, currentTab } = Astro.props;
             pointer-events: none;
         }
 
-        /* 💡 【他ページ崩れ＆二重枠防止】ゲーム画面（/hug-gioco）が直接呼ばれた場合は、外側の白いパネルスタイルを完全無効化 */
         .layout-gioco-mode {
             background: transparent !important;
             border: none !important;
@@ -321,6 +320,7 @@ const { title, currentTab } = Astro.props;
             <li><a href="/" class={`menu-btn ${currentTab === 'news' ? 'active' : ''}`}>ホーム / 新着情報</a></li>
             <li><a href="/about" class={`menu-btn ${currentTab === 'about' ? 'active' : ''}`}>当法人について</a></li>
             <li><a href="/services" class={`menu-btn ${currentTab === 'services' ? 'active' : ''}`}>事業内容・活動</a></li>
+            <li><a href="/recruitment" class={`menu-btn ${currentTab === 'recruitment' ? 'active' : ''}`}>メンバー募集</a></li>
             <li><a href="/gioco" class={`menu-btn ${currentTab === 'gioco' ? 'active' : ''}`}>HUG Gioco (教材)</a></li>
             <li><a href="/governance" class={`menu-btn ${currentTab === 'governance' ? 'active' : ''}`}>情報公開・設立公告</a></li>
             <li><a href="/sns" class={`menu-btn ${currentTab === 'sns' ? 'active' : ''}`}>公式SNS一覧</a></li>
@@ -328,7 +328,6 @@ const { title, currentTab } = Astro.props;
         </ul>
     </aside>
 
-    {/* 💡 【超重要修正】現在のパス（Astro.url.pathname）がゲーム画面「/hug-gioco」に直接一致している場合は、被さっている説明文パネル（currentTab === 'gioco' の中身）をスキップさせて、ゲームの中身（<slot />）を通します */}
     <main id="main-panel" class={Astro.url.pathname.includes('hug-gioco') ? 'layout-gioco-mode' : ''}>
         {currentTab === 'gioco' && !Astro.url.pathname.includes('hug-gioco') ? (
             <div class="content-panel">
@@ -374,6 +373,5 @@ const { title, currentTab } = Astro.props;
     document.addEventListener("DOMContentLoaded", runJyracGsapAnimation);
     document.addEventListener("astro:page-load", runJyracGsapAnimation);
 </script>
-<!-- Cloudflare Web Analytics --><script type='module' src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "cec25f9117274a519150136e7a35a0d9"}'></script><!-- End Cloudflare Web Analytics -->
-</body>
+<script type='module' src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "cec25f9117274a519150136e7a35a0d9"}'></script></body>
 </html>
