@@ -1,16 +1,8 @@
 ---
 import Layout from "../layouts/Layout.astro";
 
-// 募集中の職種一覧データ
+// 募集中の職種一覧データ（緊急募集を一番上に配置）
 const recruitList = [
-  {
-    title: "【広報スタッフ募集】「伝える力」で、若者の防災・減災アクションを社会へ",
-    department: "広報プロジェクト",
-    url: "/join-pr",
-    status: "募集中",
-    type: "オンライン可 / 全国",
-    summary: "SNS（Instagram・X・Note等）の運用やWebサイトの更新、デザイン制作などを通じて、当法人の活動を全国へ発信するメンバーを募集しています！"
-  },
   {
     title: "【令和8年熊本地震 支援メンバー募集】当団体の対応および支援活動について",
     department: "災害支援プロジェクト",
@@ -18,6 +10,14 @@ const recruitList = [
     status: "緊急募集",
     type: "現場・オンライン",
     summary: "令和8年熊本地震における支援募金プロジェクトの立ち上げ・校内募金・街頭募金などに協力いただける中高生・大学生等のメンバーを急募しています。"
+  },
+  {
+    title: "【広報スタッフ募集】「伝える力」で、若者の防災・減災アクションを社会へ",
+    department: "広報プロジェクト",
+    url: "/join-pr",
+    status: "募集中",
+    type: "オンライン可 / 全国",
+    summary: "SNS（Instagram・X・Note等）の運用やWebサイトの更新、デザイン制作などを通じて、当法人の活動を全国へ発信するメンバーを募集しています！"
   }
 ];
 ---
@@ -153,7 +153,7 @@ const recruitList = [
     box-shadow: 0 8px 24px rgba(0, 43, 84, 0.08);
   }
 
-  /* メタ情報 */
+  /* メタ情報（タグ・ステータス） */
   .card-meta {
     display: flex;
     align-items: center;
