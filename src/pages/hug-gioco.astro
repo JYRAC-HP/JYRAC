@@ -18,7 +18,7 @@ const CARDS = [
   { id: 11, c: 'peo', txt: '乳幼児を連れた母親。授乳スペースを求めている。', e: '👶' },
   { id: 12, c: 'peo', txt: '車椅子の高齢者と、そのお世話をする家族。', e: '👨‍🦽' },
   { id: 13, c: 'peo', txt: '日本語が苦手な外国人の家族（大人2人、子ども1人）。', e: '🗣️' },
-  { id: 14, c: 'peo', txt: 'ペット（大型犬）を連れて避難してきた飼い主', e: '🐕' },
+  { id: 14, c: 'peo', txt: 'ペット（大型犬）を連れて避難してきた飼い主。', e: '🐕' },
   { id: 15, c: 'peo', txt: '修学旅行中の高校生グループ30名が避難を求めてきた。', e: '🎒' }
 ];
 
@@ -410,7 +410,23 @@ const CH_CARDS = [
   .memo.m3 { border-left-color: var(--sky); } .memo.m4 { border-left-color: var(--green); }
   .memo.m5 { border-left-color: #7a5cc0; }
   .memo label { font-weight: 800; color: var(--navy); display: block; margin-bottom: 8px; font-size: 0.95rem; }
-  .memo textarea { width: 100%; border: 2px solid var(--line); border-radius: 12px; padding: 10px; font-family: inherit; font-size: 0.95rem; resize: vertical; min-height: 85px; background: #fafafa; color: var(--ink); font-weight: 500; }
+  
+  /* 💡 修正点：入力欄のはみ出しを防ぐスタイルを追加 */
+  .memo textarea { 
+    width: 100%; 
+    max-width: 100%; 
+    box-sizing: border-box; 
+    border: 2px solid var(--line); 
+    border-radius: 12px; 
+    padding: 10px; 
+    font-family: inherit; 
+    font-size: 0.95rem; 
+    resize: vertical; 
+    min-height: 85px; 
+    background: #fafafa; 
+    color: var(--ink); 
+    font-weight: 500; 
+  }
   .memo textarea:focus { outline: none; border-color: var(--primary); background: #fff; }
 
   .review-box { background: #fff; border-radius: var(--radius-sm); padding: 20px; box-shadow: var(--shadow); border: 2px solid var(--navy); text-align: left; }
@@ -640,7 +656,6 @@ const CH_CARDS = [
     function submitToSpreadsheet(e) {
       if(e) e.preventDefault();
       
-      // 💡【解決策】通信エラーや no-cors の影響を遮断するため、先に画面の組み立てと画面遷移を確実に実行
       buildSuccessScreen();
       showView(5);
       showToast('☁️ データを送信しました！');
@@ -666,7 +681,6 @@ const CH_CARDS = [
         return;
       }
 
-      // 非同期でGASへデータを送信（レスポンス待ちで画面遷移がブロックされるのを防止）
       fetch(WEBHOOK_URL, {
         method: "POST",
         mode: "no-cors",
@@ -691,7 +705,6 @@ const CH_CARDS = [
       }, 2500);
     }
 
-    // 【完全防御】イベント委譲（Event Delegation）によるルーティング
     root.onclick = function(e) {
       const target = e.target.closest('button, a');
       if (!target || !target.id) return;
