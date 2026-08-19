@@ -1,63 +1,90 @@
 ---
 import Layout from "../layouts/Layout.astro";
+import { translations, type Lang } from "../lib/i18n";
 
-// 募集中の職種一覧データ（緊急募集を一番上に配置）
+// URLから現在の言語パラメータを取得 (例: ?lang=en)
+const url = new URL(Astro.request.url);
+const currentLang: Lang = url.searchParams.get("lang") === "en" ? "en" : "ja";
+const t = translations[currentLang];
+
+// 募集中の職種一覧データ（日英対応）
 const recruitList = [
   {
-    title: "【令和8年熊本地震 支援メンバー募集】当団体の対応および支援活動について",
-    department: "災害支援プロジェクト",
-    url: "/earthquake-notice",
-    status: "緊急募集",
-    type: "現場・オンライン",
-    summary: "令和8年熊本地震における支援募金プロジェクトの立ち上げ・校内募金・街頭募金などに協力いただける中高生・大学生等のメンバーを急募しています。"
+    title: currentLang === 'en' 
+      ? "【2026 Kumamoto Earthquake Support Members Wanted】 Our Response and Support Activities" 
+      : "【令和8年熊本地震 支援メンバー募集】当団体の対応および支援活動について",
+    department: currentLang === 'en' ? "Disaster Relief Project" : "災害支援プロジェクト",
+    url: `/earthquake-notice?lang=${currentLang}`,
+    status: currentLang === 'en' ? "URGENT" : "緊急募集",
+    isUrgent: true,
+    type: currentLang === 'en' ? "On-site / Online" : "現場・オンライン",
+    summary: currentLang === 'en'
+      ? "We are urgently seeking middle, high school, and college students to assist in setting up fundraising support projects, school fundraising, and street fundraising for the 2026 Kumamoto Earthquake."
+      : "令和8年熊本地震における支援募金プロジェクトの立ち上げ・校内募金・街頭募金などに協力いただける中高生・大学生等のメンバーを急募しています。"
   },
   {
-    title: "【広報スタッフ募集】「伝える力」で、若者の防災・減災アクションを社会へ",
-    department: "広報プロジェクト",
-    url: "/join-pr",
-    status: "募集中",
-    type: "オンライン可 / 全国",
-    summary: "SNS（Instagram・X・Note等）の運用やWebサイトの更新、デザイン制作などを通じて、当法人の活動を全国へ発信するメンバーを募集しています！"
+    title: currentLang === 'en'
+      ? "【PR Staff Wanted】 Share Youth Disaster Prevention & Mitigation Actions with Society via 'Power of Communication'"
+      : "【広報スタッフ募集】「伝える力」で、若者の防災・減災アクションを社会へ",
+    department: currentLang === 'en' ? "PR Project" : "広報プロジェクト",
+    url: `/join-pr?lang=${currentLang}`,
+    status: currentLang === 'en' ? "RECRUITING" : "募集中",
+    isUrgent: false,
+    type: currentLang === 'en' ? "Online Available / Nationwide" : "オンライン可 / 全国",
+    summary: currentLang === 'en'
+      ? "We are looking for members to communicate our organization's activities nationwide through SNS (Instagram, X, Note, etc.) operations, website updates, and graphic design!"
+      : "SNS（Instagram・X・Note等）の運用やWebサイトの更新、デザイン制作などを通じて、当法人の活動を全国へ発信するメンバーを募集しています！"
   }
 ];
 ---
 
-<Layout title="メンバー募集 | JYRAC 日本若者防災復興協会" currentTab="recruitment">
-  <div class="recruitment-container">
+<Layout 
+  title={currentLang === 'en' ? "Join Us | JYRAC Japan Youth Relief Association" : "メンバー募集 | JYRAC 日本若者防災復興協会"} 
+  currentTab="recruitment"
+>
+  <div class="recruitment-container w-full max-w-full box-border overflow-hidden">
     
-    <header class="page-header">
+    <header class="page-header w-full box-border">
       <span class="sub-tag">JOIN US</span>
-      <h1 class="main-title">メンバー募集</h1>
-      <p class="header-desc">
-        日本若者防災復興協会（JYRAC）では、全国の中学生・高校生・大学生を中心とした若者メンバーを募集しています。
+      <h1 class="main-title break-words">
+        {currentLang === 'en' ? 'Join Our Team' : 'メンバー募集'}
+      </h1>
+      <p class="header-desc break-words">
+        {currentLang === 'en' 
+          ? 'Japan Youth Relief Association (JYRAC) is recruiting youth members, mainly middle, high school, and college students nationwide.' 
+          : '日本若者防災復興協会（JYRAC）では、全国の中学生・高校生・大学生を中心とした若者メンバーを募集しています。'}
       </p>
     </header>
 
-    <div class="notice-info-box">
-      <div class="notice-icon">📢</div>
-      <div class="notice-text">
-        <strong>【今後の募集について】</strong><br />
-        現在掲載している募集のほか、各事業・各プロジェクトの募集要項につきましても<b>随時更新・公開していきます</b>。最新情報は本ページまたは公式SNSをご確認ください。
+    <div class="notice-info-box w-full box-border overflow-hidden">
+      <div class="notice-icon shrink-0">📢</div>
+      <div class="notice-text break-words">
+        <strong>{currentLang === 'en' ? '【Future Recruitment】' : '【今後の募集について】'}</strong><br />
+        {currentLang === 'en' ? (
+          <>In addition to current positions, application guidelines for each project and initiative will be <b>updated and published regularly</b>. Please check this page or official SNS for the latest updates.</>
+        ) : (
+          <>現在掲載している募集のほか、各事業・各プロジェクトの募集要項につきましても<b>随時更新・公開していきます</b>。最新情報は本ページまたは公式SNSをご確認ください。</>
+        )}
       </div>
     </div>
 
-    <div class="recruit-list">
+    <div class="recruit-list w-full box-border">
       {recruitList.map((item) => (
-        <div class="recruit-card">
+        <div class="recruit-card w-full box-border overflow-hidden">
           <div class="card-meta">
-            <span class={`status-badge ${item.status === '緊急募集' ? 'urgent' : 'normal'}`}>
+            <span class={`status-badge ${item.isUrgent ? 'urgent' : 'normal'} shrink-0`}>
               {item.status}
             </span>
-            <span class="department-tag">{item.department}</span>
-            <span class="type-tag">{item.type}</span>
+            <span class="department-tag shrink-0">{item.department}</span>
+            <span class="type-tag shrink-0">{item.type}</span>
           </div>
           
-          <h2 class="card-title">{item.title}</h2>
-          <p class="card-summary">{item.summary}</p>
+          <h2 class="card-title break-words">{item.title}</h2>
+          <p class="card-summary break-words">{item.summary}</p>
           
           <div class="card-action">
-            <a href={item.url} class="detail-btn">
-              募集要項・詳細を見る ➔
+            <a href={item.url} class="detail-btn break-words">
+              {currentLang === 'en' ? 'View Details ➔' : '募集要項・詳細を見る ➔'}
             </a>
           </div>
         </div>
@@ -71,7 +98,8 @@ const recruitList = [
   .recruitment-container {
     max-width: 800px;
     margin: 0 auto;
-    padding: 10px 0 40px 0;
+    padding: 10px 16px 40px 16px;
+    box-sizing: border-box;
   }
 
   /* ヘッダー */
@@ -99,6 +127,8 @@ const recruitList = [
     font-weight: 900;
     color: #002b54;
     margin: 6px 0;
+    overflow-wrap: break-word;
+    word-break: break-word;
   }
 
   .header-desc {
@@ -106,6 +136,8 @@ const recruitList = [
     color: #5b6779;
     margin: 0;
     line-height: 1.6;
+    overflow-wrap: break-word;
+    word-break: break-word;
   }
 
   /* お知らせ注記ボックス */
@@ -130,6 +162,8 @@ const recruitList = [
     font-size: 13px;
     color: #002b54;
     line-height: 1.6;
+    overflow-wrap: break-word;
+    word-break: break-word;
   }
 
   /* 募集カード一覧 */
@@ -195,6 +229,8 @@ const recruitList = [
     color: #002b54;
     margin: 0 0 10px 0;
     line-height: 1.4;
+    overflow-wrap: break-word;
+    word-break: break-word;
   }
 
   .card-summary {
@@ -202,6 +238,8 @@ const recruitList = [
     color: #4a5568;
     line-height: 1.6;
     margin: 0 0 16px 0;
+    overflow-wrap: break-word;
+    word-break: break-word;
   }
 
   /* ボタン */
@@ -220,6 +258,7 @@ const recruitList = [
     border-radius: 6px;
     transition: all 0.2s ease;
     box-shadow: 0 2px 8px rgba(0, 180, 197, 0.25);
+    overflow-wrap: break-word;
   }
 
   .detail-btn:hover {
@@ -233,6 +272,9 @@ const recruitList = [
     }
     .card-title {
       font-size: 16px;
+    }
+    .card-action {
+      text-align: center;
     }
     .detail-btn {
       width: 100%;
