@@ -1,63 +1,99 @@
 ---
 import Layout from "../layouts/Layout.astro";
+import { translations, type Lang } from "../lib/i18n";
 
-// ニュース記事データ
+// URLから言語パラメーターを取得 (例: ?lang=en)
+const url = new URL(Astro.request.url);
+const currentLang: Lang = url.searchParams.get("lang") === "en" ? "en" : "ja";
+const t = translations[currentLang];
+const langParam = currentLang === 'en' ? '?lang=en' : '';
+
+// 言語に応じたニュース記事データ
 const newsArticles = [
   {
-    title: "【熊本地震】願いを届けるデジタル絵馬を公開しました",
+    title: currentLang === 'en' 
+      ? '[Kumamoto Earthquake] Digital Ema (Message) Page Launched' 
+      : '【熊本地震】願いを届けるデジタル絵馬を公開しました',
     url: "https://nsf.stki.org/ema",
     date: "2026.08.15",
-    category: "お知らせ",
+    category: currentLang === 'en' ? 'News' : 'お知らせ',
     badgeClass: "badge-info",
     hasLink: true,
-    summary: "被災地の一日も早い復興を願い、デジタル絵馬ページを公開いたしました。皆さまからの温かいメッセージをお待ちしております。"
+    summary: currentLang === 'en'
+      ? 'We have launched a digital Ema page to send recovery messages to the affected areas. We welcome your warm messages.'
+      : '被災地の一日も早い復興を願い、デジタル絵馬ページを公開いたしました。皆さまからの温かいメッセージをお待ちしております。'
   },
   {
-    title: "【令和8年熊本地震 支援メンバー募集】当団体の対応および支援活動について",
-    url: "/earthquake-notice",
+    title: currentLang === 'en'
+      ? '[2026 Kumamoto Earthquake: Relief Members Wanted] Our Response and Relief Activities'
+      : '【令和8年熊本地震 支援メンバー募集】当団体の対応および支援活動について',
+    url: `/earthquake-notice${langParam}`,
     date: "2026.07.28",
-    category: "緊急募集",
+    category: currentLang === 'en' ? 'Urgent' : '緊急募集',
     badgeClass: "badge-urgent",
     hasLink: true,
-    summary: "本日発生いたしました地震につきまして、当団体では学生・若者を中心とした支援募金プロジェクトの立ち上げを進めております。現在、全国で支援活動にご協力いただける中学生・高校生・大学生等のメンバーを緊急募集しています。"
+    summary: currentLang === 'en'
+      ? 'Regarding today’s earthquake, JYRAC is launching a youth/student-led fundraising project. We are urgently seeking junior high, high school, and university student members nationwide.'
+      : '本日発生いたしました地震につきまして、当団体では学生・若者を中心とした支援募金プロジェクトの立ち上げを進めております。現在、全国で支援活動にご協力いただける中学生・高校生・大学生等のメンバーを緊急募集しています。'
   },
   {
-    title: "【メンバー募集】広報・災害支援など各種プロジェクトの募集情報を更新しました",
-    url: "/recruitment",
+    title: currentLang === 'en'
+      ? '[Recruitment] Updated Application Guidelines for PR & Disaster Relief Projects'
+      : '【メンバー募集】広報・災害支援など各種プロジェクトの募集情報を更新しました',
+    url: `/recruitment${langParam}`,
     date: "2026.07.30",
-    category: "募集",
+    category: currentLang === 'en' ? 'Recruit' : '募集',
     badgeClass: "badge-recruitment",
     hasLink: true,
-    summary: "日本若者防災復興協会（JYRAC）では、全国の中学生・高校生・大学生を中心とした若者メンバーを大募集しています。最新の募集要項はこちらからご確認いただけます。"
-  },
-{
-    title: "特定非営利活動法人 日本若者防災復興協会 正式設立（登記完了）のお知らせ",
-    url: "#",
-    date: "2026.06.21",
-    category: "お知らせ",
-    badgeClass: "badge-info",
-    hasLink: false,
-    summary: "特定非営利活動法人 日本若者防災復興協会は、法務局での設立登記手続きが完了し、正式に法人として設立いたしました。また、初期運用コストを抑えるため、学生団体の共有ドメインサービスを運営する協力団体「TRANs」の許可を得て、そのドメイン「stki.org」のサブドメインである「jyrac.stki.org」を当団体の公式ウェブサイト・公式ドメインとして無償で借り受け、運用しております。"
+    summary: currentLang === 'en'
+      ? 'JYRAC is recruiting youth members across Japan, centered on junior high, high school, and college students. Check out the latest application details here.'
+      : '日本若者防災復興協会（JYRAC）では、全国の中学生・高校生・大学生を中心とした若者メンバーを大募集しています。最新の募集要項はこちらからご確認いただけます。'
   },
   {
-    title: "特定非営利活動法人 日本若者防災復興協会 設立（認証されました）のお知らせ",
+    title: currentLang === 'en'
+      ? 'Official Establishment (Registration Completed) of Japan Youth Resilience Action Consortium'
+      : '特定非営利活動法人 日本若者防災復興協会 正式設立（登記完了）のお知らせ',
     url: "#",
-    date: "2026.06.17",
-    category: "お知らせ",
+    date: "2026.06.21",
+    category: currentLang === 'en' ? 'News' : 'お知らせ',
     badgeClass: "badge-info",
     hasLink: false,
-    summary: "東京都より特定非営利活動法人 日本若者防災復興協会の設立が認証されましたことをご報告いたします。"
+    summary: currentLang === 'en'
+      ? 'JYRAC has completed incorporation registration procedures at the Legal Affairs Bureau and officially established as an NPO. Additionally, to keep initial costs low, we operate on "jyrac.stki.org" generously provided by "TRANs".'
+      : '特定非営利活動法人 日本若者防災復興協会は、法務局での設立登記手続きが完了し、正式に法人として設立いたしました。また、初期運用コストを抑えるため、学生団体の共有ドメインサービスを運営する協力団体「TRANs」の許可を得て、そのドメイン「stki.org」のサブドメインである「jyrac.stki.org」を当団体の公式ウェブサイト・公式ドメインとして無償で借り受け、運用しております。'
+  },
+  {
+    title: currentLang === 'en'
+      ? 'Establishment Certification Approved by Tokyo Metropolitan Government'
+      : '特定非営利活動法人 日本若者防災復興協会 設立（認証されました）のお知らせ',
+    url: "#",
+    date: "2026.06.17",
+    category: currentLang === 'en' ? 'News' : 'お知らせ',
+    badgeClass: "badge-info",
+    hasLink: false,
+    summary: currentLang === 'en'
+      ? 'We report that the establishment of Japan Youth Resilience Action Consortium (JYRAC) has been officially certified by the Tokyo Metropolitan Government.'
+      : '東京都より特定非営利活動法人 日本若者防災復興協会の設立が認証されましたことをご報告いたします。'
   }
 ];
 ---
 
-<Layout title="ホーム | JYRAC 日本若者防災復興協会" currentTab="news">
+<Layout 
+  title={currentLang === 'en' ? 'Home | JYRAC Japan Youth Resilience Action Consortium' : 'ホーム | JYRAC 日本若者防災復興協会'} 
+  currentTab="news"
+>
   <div class="news-page-container">
     
     <header class="news-header">
       <span class="sub-title">JYRAC NEWS & TOPICS</span>
-      <h1 class="main-title">お知らせ・最新情報</h1>
-      <p class="header-desc">特定非営利活動法人 日本若者防災復興協会の最新情報をお届けします。</p>
+      <h1 class="main-title">
+        {currentLang === 'en' ? 'News & Latest Information' : 'お知らせ・最新情報'}
+      </h1>
+      <p class="header-desc">
+        {currentLang === 'en' 
+          ? 'Delivering the latest news from Japan Youth Resilience Action Consortium (JYRAC).' 
+          : '特定非営利活動法人 日本若者防災復興協会の最新情報をお届けします。'}
+      </p>
     </header>
 
     <div class="news-list">
@@ -75,7 +111,7 @@ const newsArticles = [
             <p class="card-summary">{article.summary}</p>
             <div class="card-footer">
               <a href={article.url} class="detail-link">
-                詳細ページを見る ➔
+                {currentLang === 'en' ? 'View Details ➔' : '詳細ページを見る ➔'}
               </a>
             </div>
           </div>
