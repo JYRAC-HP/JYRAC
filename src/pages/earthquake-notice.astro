@@ -1,94 +1,154 @@
 ---
 import Layout from "../layouts/Layout.astro";
+import { translations, type Lang } from "../lib/i18n";
+
+// URLから言語パラメーターを取得 (例: ?lang=en)
+const url = new URL(Astro.request.url);
+const currentLang: Lang = url.searchParams.get("lang") === "en" ? "en" : "ja";
+const t = translations[currentLang];
+
+// 言語に応じたクエリパラメータ（リンク維持用）
+const langParam = currentLang === 'en' ? '?lang=en' : '';
 ---
 
-<Layout title="令和8年熊本地震 支援メンバー募集 | JYRAC" currentTab="news">
+<Layout 
+  title={currentLang === 'en' ? '2026 Kumamoto Earthquake Relief Members Wanted | JYRAC' : '令和8年熊本地震 支援メンバー募集 | JYRAC'} 
+  currentTab="news"
+>
   <div class="notice-container">
     <div class="back-link-wrapper">
-      <a href="/" class="back-link">➔ トップページに戻る</a>
+      <a href={`/${langParam}`} class="back-link">
+        {currentLang === 'en' ? '➔ Back to Top' : '➔ トップページに戻る'}
+      </a>
     </div>
 
     <header class="notice-header">
       <div class="meta-info">
-        <span class="badge-urgent">緊急募集</span>
+        <span class="badge-urgent">
+          {currentLang === 'en' ? 'URGENT' : '緊急募集'}
+        </span>
         <span class="notice-date">2026.07.28</span>
       </div>
-      <h1 class="notice-title">【令和8年熊本地震 支援メンバー募集】</h1>
+      <h1 class="notice-title">
+        {currentLang === 'en'
+          ? '[2026 Kumamoto Earthquake: Relief Members Wanted]'
+          : '【令和8年熊本地震 支援メンバー募集】'}
+      </h1>
     </header>
 
     <div class="notice-body">
       <p class="sympathy-box">
-        このたびの令和8年熊本地震により被災された皆様に、心よりお見舞い申し上げます。
+        {currentLang === 'en'
+          ? 'We express our deepest sympathies to all those affected by the 2026 Kumamoto Earthquake.'
+          : 'このたびの令和8年熊本地震により被災された皆様に、心よりお見舞い申し上げます。'}
       </p>
 
       <div class="notice-image-card">
         <img 
           src="/kumamoto_image.jpg" 
-          alt="令和8年熊本地震 支援活動 ポスター" 
+          alt={currentLang === 'en' ? '2026 Kumamoto Earthquake Relief Poster' : '令和8年熊本地震 支援活動 ポスター'} 
         />
       </div>
 
       <p>
-        特定非営利活動法人 日本若者防災復興協会（JYRAC）では、令和8年熊本地震において若者・学生を中心とした支援募金プロジェクトの立ち上げを進めております。
+        {currentLang === 'en'
+          ? 'The Japan Youth Resilience Action Consortium (JYRAC) is launching a youth- and student-led fundraising relief project for the 2026 Kumamoto Earthquake.'
+          : '特定非営利活動法人 日本若者防災復興協会（JYRAC）では、令和8年熊本地震において若者・学生を中心とした支援募金プロジェクトの立ち上げを進めております。'}
       </p>
 
       <p>
-        現在、全国で支援活動にご協力いただける<strong>中学生・高校生・大学生等の若者メンバー</strong>を緊急募集しています。
+        {currentLang === 'en' ? (
+          <>We are urgently seeking <strong>youth members (junior high, high school, university students, etc.)</strong> across Japan to cooperate in relief activities.</>
+        ) : (
+          <>現在、全国で支援活動にご協力いただける<strong>中学生・高校生・大学生等の若者メンバー</strong>を緊急募集しています。</>
+        )}
       </p>
 
       <div class="info-block">
-        <h2>■ 主な活動内容</h2>
+        <h2>
+          {currentLang === 'en' ? '■ Main Activities' : '■ 主な活動内容'}
+        </h2>
         <ul>
-          <li>学校・生徒会等と連携した校内募金の企画・実施</li>
-          <li>各地域での街頭募金活動の企画・運営</li>
-          <li>設置型募金箱の導入・調整</li>
-          <li>広報・SNS発信・デザイン作成</li>
-          <li>運営・地域連携・調整業務 など</li>
+          {currentLang === 'en' ? (
+            <>
+              <li>Planning and conducting in-school fundraising in cooperation with schools and student councils</li>
+              <li>Planning and operating street fundraising activities in various regions</li>
+              <li>Coordination and installation of fixed donation boxes</li>
+              <li>Public relations, SNS dissemination, and design creation</li>
+              <li>Operations, regional partnership, and coordination tasks, etc.</li>
+            </>
+          ) : (
+            <>
+              <li>学校・生徒会等と連携した校内募金の企画・実施</li>
+              <li>各地域での街頭募金活動の企画・運営</li>
+              <li>設置型募金箱の導入・調整</li>
+              <li>広報・SNS発信・デザイン作成</li>
+              <li>運営・地域連携・調整業務 など</li>
+            </>
+          )}
         </ul>
       </div>
 
       <p>
-        活動はオンラインでの打ち合わせを中心に進めるため、全国どこからでもご参加いただけます。防災活動やボランティアの経験は問いません。
+        {currentLang === 'en'
+          ? 'Activities will mainly proceed through online meetings, so you can participate from anywhere in Japan. Prior experience in disaster management or volunteering is not required.'
+          : '活動はオンラインでの打ち合わせを中心に進めるため、全国どこからでもご参加いただけます。防災活動やボランティアの経験は問いません。'}
       </p>
 
       <div class="info-block highlight-block">
-        <h2>■ 対象・参加方法</h2>
+        <h2>
+          {currentLang === 'en' ? '■ Target & How to Join' : '■ 対象・参加方法'}
+        </h2>
         
         <div class="detail-item">
-          <strong>【対象】</strong>
-          <p>中学生・高校生・大学生・若者世代</p>
+          <strong>{currentLang === 'en' ? '【Target】' : '【対象】'}</strong>
+          <p>{currentLang === 'en' ? 'Junior high, high school, university students, and youth generation' : '中学生・高校生・大学生・若者世代'}</p>
         </div>
 
         <div class="detail-item">
-          <strong>【担当窓口】</strong>
-          <p>広報局長 高江洲</p>
+          <strong>{currentLang === 'en' ? '【Contact Person】' : '【担当窓口】'}</strong>
+          <p>{currentLang === 'en' ? 'PR Director: Takaesu' : '広報局長 高江洲'}</p>
         </div>
 
         <div class="detail-item">
-          <strong>【参加・お問い合わせ方法】</strong>
+          <strong>{currentLang === 'en' ? '【Participation & Inquiries】' : '【参加・お問い合わせ方法】'}</strong>
           <p>
-            支援活動への参加希望やご相談は、下記メールアドレスまたは各種連絡先（担当：広報局長 高江洲）までお気軽にお問い合わせください。
+            {currentLang === 'en'
+              ? 'If you would like to participate in relief activities or have any questions, please feel free to contact us via the email address below or through our contact points (Attn: PR Director Takaesu).'
+              : '支援活動への参加希望やご相談は、下記メールアドレスまたは各種連絡先（担当：広報局長 高江洲）までお気軽にお問い合わせください。'}
           </p>
         </div>
 
         <div class="btn-wrapper">
-          <a href="mailto:jyrac.pr@gmail.com?subject=【支援メンバー応募】広報局長%20高江洲宛" class="contact-btn">
-            メールで問い合わせ（担当：広報局長 高江洲）
+          <a 
+            href={`mailto:jyrac.pr@gmail.com?subject=${currentLang === 'en' ? encodeURIComponent('【Relief Member Application】Attn: PR Director Takaesu') : '【支援メンバー応募】広報局長%20高江洲宛'}`} 
+            class="contact-btn"
+          >
+            {currentLang === 'en' 
+              ? 'Inquire via Email (Attn: PR Director Takaesu)' 
+              : 'メールで問い合わせ（担当：広報局長 高江洲）'}
           </a>
         </div>
       </div>
 
       <p>
-        一人の力は小さくても、全国の若者が手を取り合うことで大きな支援の力になります。
+        {currentLang === 'en'
+          ? 'Even if one person’s power is small, when youth across the nation join hands, it becomes a powerful force of support.'
+          : '一人の力は小さくても、全国の若者が手を取り合うことで大きな支援の力になります。'}
       </p>
       <p>
-        皆様のご協力・ご参加を心よりお待ちしております。<br />
-        また、周囲の友人や学校等への周知・ご協力もよろしくお願いいたします。
+        {currentLang === 'en' ? (
+          <>We sincerely look forward to your cooperation and participation.<br />We also appreciate your help in sharing this with friends and at your schools.</>
+        ) : (
+          <>皆様のご協力・ご参加を心よりお待ちしております。<br />また、周囲の友人や学校等への周知・ご協力もよろしくお願いいたします。</>
+        )}
       </p>
     </div>
 
     <footer class="notice-footer">
-      <a href="/" class="return-btn">トップページへ戻る</a>
+      <a href={`/${langParam}`} class="return-btn">
+        {currentLang === 'en' ? 'Back to Top' : 'トップページへ戻る'}
+      </a>
     </footer>
   </div>
 </Layout>
