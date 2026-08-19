@@ -1,22 +1,62 @@
 ---
+// src/pages/services.astro
 import Layout from '../layouts/Layout.astro';
+import { translations, type Lang } from '../lib/i18n';
+
+// URLから言語パラメーターを取得 (例: ?lang=en)
+const url = new URL(Astro.request.url);
+const currentLang: Lang = url.searchParams.get("lang") === "en" ? "en" : "ja";
+const t = translations[currentLang];
 ---
 
-<Layout title="主な事業・活動内容 | 日本若者防災復興協会" currentTab="services">
+<Layout 
+    title={currentLang === 'en' ? 'Services & Activities | Japan Youth Resilience Action Consortium' : '主な事業・活動内容 | 日本若者防災復興協会'} 
+    currentTab="services"
+>
     <div class="content-panel">
-        <h2>主な事業・活動内容</h2>
-        <p class="lead-text">当団体は、若者たちの主体かつ創造的な防災・復興活動を全面的にサポートするため、以下の基盤事業を展開・支援してまいります。</p>
+        <h2>
+            {currentLang === 'en' ? 'Main Services & Activities' : '主な事業・活動内容'}
+        </h2>
+        
+        <p class="lead-text">
+            {currentLang === 'en'
+                ? 'To comprehensively support the proactive and creative disaster prevention and recovery activities of youth, our organization develops and backs the following core infrastructure initiatives.'
+                : '当団体は、若者たちの主体かつ創造的な防災・復興活動を全面的にサポートするため、以下の基盤事業を展開・支援してまいります。'}
+        </p>
         
         <div class="project-grid">
             <div class="project-card">
-                <h4><span class="project-badge">支援基盤事業</span>学生主体プロジェクト「NSF PROJECTs」</h4>
-                <p>全国の中高生・大学生が中心となり、能登半島地震をはじめとする被災地への復興支援や、若者目線での柔軟な防災啓発を行っています。当団体は、彼らの法的・財政的基盤を支えています。</p>
-                <a href="https://nsf.stki.org/" class="btn-link" target="_blank">公式サイト ➔</a>
+                <h4>
+                    <span class="project-badge">
+                        {currentLang === 'en' ? 'Support Platform' : '支援基盤事業'}
+                    </span>
+                    {currentLang === 'en' ? 'Student-Led Project "NSF PROJECTs"' : '学生主体プロジェクト「NSF PROJECTs」'}
+                </h4>
+                <p>
+                    {currentLang === 'en'
+                        ? 'Centered around junior high, high school, and university students nationwide, this project conducts recovery support for disaster-affected areas such as the Noto Peninsula Earthquake, as well as flexible disaster awareness from a youth perspective. JYRAC supports their legal and financial foundations.'
+                        : '全国の中高生・大学生が中心となり、能登半島地震をはじめとする被災地への復興支援や、若者目線での柔軟な防災啓発を行っています。当団体は、彼らの法的・財政的基盤を支えています。'}
+                </p>
+                <a href="https://nsf.stki.org/" class="btn-link" target="_blank" rel="noopener noreferrer">
+                    {currentLang === 'en' ? 'Official Site ➔' : '公式サイト ➔'}
+                </a>
             </div>
+
             <div class="project-card orange-card">
-                <h4><span class="project-badge summit">主催事業</span>全国生徒会防災サミット</h4>
-                <p>JYRACが主催する最重要サミットです。東日本大震災や能登半島地震などの教訓の継承、地域や世代を超えた防災ディスカッションを行い、若者発の「次世代防災提言」を発信しています。</p>
-                <a href="https://summit.jyrac.stki.org" class="btn-link btn-summit" target="_blank">公式サイト ➔</a>
+                <h4>
+                    <span class="project-badge summit">
+                        {currentLang === 'en' ? 'Hosted Event' : '主催事業'}
+                    </span>
+                    {currentLang === 'en' ? 'National Student Council Disaster Prevention Summit' : '全国生徒会防災サミット'}
+                </h4>
+                <p>
+                    {currentLang === 'en'
+                        ? 'The flagship summit organized by JYRAC. We pass down lessons from the Great East Japan Earthquake and the Noto Peninsula Earthquake, hold cross-regional and intergenerational disaster management discussions, and issue "Next-Generation Disaster Management Proposals" driven by youth.'
+                        : 'JYRACが主催する最重要サミットです。東日本大震災や能登半島地震などの教訓の継承、地域や世代を超えた防災ディスカッションを行い、若者発の「次世代防災提言」を発信しています。'}
+                </p>
+                <a href="https://summit.jyrac.stki.org" class="btn-link btn-summit" target="_blank" rel="noopener noreferrer">
+                    {currentLang === 'en' ? 'Official Site ➔' : '公式サイト ➔'}
+                </a>
             </div>
         </div>
     </div>
