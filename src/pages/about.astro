@@ -1,19 +1,60 @@
 ---
 import Layout from '../layouts/Layout.astro';
+import { translations, type Lang } from '../lib/i18n';
+
+// URLから言語パラメーターを取得 (例: ?lang=en)
+const url = new URL(Astro.request.url);
+const currentLang: Lang = url.searchParams.get("lang") === "en" ? "en" : "ja";
+const t = translations[currentLang];
 ---
 
-<Layout title="当法人について | 日本若者防災復興協会" currentTab="about">
+<Layout title={currentLang === 'en' ? 'About Us | JYRAC' : '当法人について | 日本若者防災復興協会'} currentTab="about">
     <div class="content-panel">
-        <h2>当法人について（設立趣旨）</h2>
-        <p>災害大国と呼ばれる日本において、これからの未来を担う世代が「防災・減災」を自分ごととして捉え、備えることは、持続可能な社会を築くための最優先課題です。</p>
-        <p>当法人は、若者が主体となって防災、減災及び災害復興に関わる活動、学習及び発信を行う環境を整え、地域及び世代を超えた協働を促進することにより、安全で持続可能な社会の形成に寄与することを目的として設立されました。</p>
+        <h2>
+            {currentLang === 'en' ? 'About Us (Purpose of Establishment)' : '当法人について（設立趣旨）'}
+        </h2>
+
+        <p>
+            {currentLang === 'en'
+                ? 'In Japan, known as a disaster-prone country, empowering the next generation to view disaster prevention and mitigation as their own responsibility and to prepare accordingly is an urgent priority for building a sustainable society.'
+                : '災害大国と呼ばれる日本において、これからの未来を担う世代が「防災・減災」を自分ごととして捉え、備えることは、持続可能な社会を築くための最優先課題です。'}
+        </p>
+
+        <p>
+            {currentLang === 'en'
+                ? 'This organization was established to create an environment where young people take the lead in activities, learning, and advocacy related to disaster prevention, mitigation, and recovery. By promoting cross-regional and intergenerational collaboration, we aim to contribute to the creation of a safe and sustainable society.'
+                : '当法人は、若者が主体となって防災、減災及び災害復興に関わる活動、学習及び発信を行う環境を整え、地域及び世代を超えた協働を促進することにより、安全で持続可能な社会の形成に寄与することを目的として設立されました。'}
+        </p>
         
-        <h3>団体概要</h3>
+        <h3>
+            {currentLang === 'en' ? 'Organization Overview' : '団体概要'}
+        </h3>
+
         <table class="info-table">
-            <tr><th>団体名称</th><td>特定非営利活動法人日本若者防災復興協会</td></tr>
-            <tr><th>代表者</th><td>久保 壮太郎</td></tr>
-            <tr><th>設立日</th><td>令和8年6月21日</td></tr>
-            <tr><th>活動分野</th><td>社会教育の推進 / まちづくりの推進 / 災害救援 / 人権の擁護又は平和の推進 / NPO支援</td></tr>
+            <tr>
+                <th>{currentLang === 'en' ? 'Organization Name' : '団体名称'}</th>
+                <td>
+                    {currentLang === 'en'
+                        ? 'Japan Youth Resilience Action Consortium (JYRAC)'
+                        : '特定非営利活動法人日本若者防災復興協会'}
+                </td>
+            </tr>
+            <tr>
+                <th>{currentLang === 'en' ? 'Representative' : '代表者'}</th>
+                <td>{currentLang === 'en' ? 'Sotaro Kubo' : '久保 壮太郎'}</td>
+            </tr>
+            <tr>
+                <th>{currentLang === 'en' ? 'Established' : '設立日'}</th>
+                <td>{currentLang === 'en' ? 'June 21, 2026' : '令和8年6月21日'}</td>
+            </tr>
+            <tr>
+                <th>{currentLang === 'en' ? 'Fields of Activity' : '活動分野'}</th>
+                <td>
+                    {currentLang === 'en'
+                        ? 'Social Education / Community Development / Disaster Relief / Human Rights & Peace / NPO Support'
+                        : '社会教育の推進 / まちづくりの推進 / 災害救援 / 人権の擁護又は平和の推進 / NPO支援'}
+                </td>
+            </tr>
         </table>
     </div>
 </Layout>
