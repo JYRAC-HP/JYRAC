@@ -5,8 +5,9 @@
 import Layout from '../layouts/Layout.astro';
 import { translations, type Lang } from '../lib/i18n';
 
-// URLから言語パラメーターを取得 (例: ?lang=en)
-const url = new URL(Astro.request.url);
+// URLから言語パラメーターを取得 (プロトコルをhttpsに整形)
+const requestUrl = Astro.request.url.replace(/^http:/, 'https:');
+const url = new URL(requestUrl);
 const currentLang: Lang = url.searchParams.get("lang") === "en" ? "en" : "ja";
 const t = translations[currentLang];
 const langParam = currentLang === 'en' ? '?lang=en' : '';
