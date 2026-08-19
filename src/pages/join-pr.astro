@@ -1,48 +1,111 @@
 ---
 import Layout from "../layouts/Layout.astro";
+import { translations, type Lang } from "../lib/i18n";
+
+// URLから言語パラメーターを取得 (例: ?lang=en)
+const url = new URL(Astro.request.url);
+const currentLang: Lang = url.searchParams.get("lang") === "en" ? "en" : "ja";
+const t = translations[currentLang];
 ---
 
-<Layout title="広報局員募集 | JYRAC 日本若者防災復興協会" activeKey="news">
+<Layout 
+  title={currentLang === 'en' ? 'PR Staff Recruitment | JYRAC' : '広報局員募集 | JYRAC 日本若者防災復興協会'} 
+  currentTab="recruitment"
+>
   <div class="nago-style-wrapper">
     <header class="header-container">
       <div class="header-left">
-        <span class="sub-tag">特定非営利活動法人</span>
-        <h1 class="site-title">日本若者防災復興協会</h1>
+        <span class="sub-tag">
+          {currentLang === 'en' ? 'Specified Non-profit Organization' : '特定非営利活動法人'}
+        </span>
+        <h1 class="site-title">
+          {currentLang === 'en' ? 'Japan Youth Resilience Action Consortium' : '日本若者防災復興協会'}
+        </h1>
       </div>
     </header>
 
     <main>
-      <h2 class="post-title">【広報局員募集】「伝える力」で、若者の防災・減災アクションを社会へ</h2>
+      <h2 class="post-title">
+        {currentLang === 'en'
+          ? '[PR Staff Wanted] Delivering Youth Disaster Prevention & Recovery Actions to Society'
+          : '【広報局員募集】「伝える力」で、若者の防災・減災アクションを社会へ'}
+      </h2>
       
       <div class="post-body">
-        <p>特定非営利活動法人 日本若者防災復興協会（JYRAC）では、若者が主体となる防災・減災・災害復興の取り組みを社会へ発信する<b>広報スタッフ（広報局員）</b>を大募集しています！</p>
+        <p>
+          {currentLang === 'en' ? (
+            <>Japan Youth Resilience Action Consortium (JYRAC) is recruiting <b>PR staff (Public Relations Department members)</b> to communicate youth-led disaster prevention, mitigation, and recovery initiatives to society!</>
+          ) : (
+            <>特定非営利活動法人 日本若者防災復興協会（JYRAC）では、若者が主体となる防災・減災・災害復興の取り組みを社会へ発信する<b>広報スタッフ（広報局員）</b>を大募集しています！</>
+          )}
+        </p>
 
-        <div class="section-h3">広報スタッフのやりがい・魅力</div>
+        <div class="section-h3">
+          {currentLang === 'en' ? 'Rewards & Appeal of PR Staff' : '広報スタッフのやりがい・魅力'}
+        </div>
         <ul>
-          <li><b>防災・復興の重要性を「若者目線」で届ける力になる：</b> あなたが作成した記事や投稿がきっかけとなり、同世代の防災意識が高まったり、地域の支援につながる大きなやりがいがあります。</li>
-          <li><b>実践的なスキルが身につく：</b> SNS運用や記事執筆、画像・動画デザインなど将来役立つスキルが身につきます。</li>
-          <li><b>全国の志の高い仲間と出会える：</b> 全国の仲間と一緒にプロジェクトを作り上げる達成感があります。</li>
+          {currentLang === 'en' ? (
+            <>
+              <li><b>Promoting disaster prevention from a youth perspective:</b> Articles and posts you create can raise disaster awareness among peers and lead to regional support, offering great fulfillment.</li>
+              <li><b>Acquiring practical skills:</b> Gain valuable future skills such as SNS operation, article writing, and graphic/video design.</li>
+              <li><b>Meeting ambitious peers across Japan:</b> Experience a sense of accomplishment in building projects together with teammates nationwide.</li>
+            </>
+          ) : (
+            <>
+              <li><b>防災・復興の重要性を「若者目線」で届ける力になる：</b> あなたが作成した記事や投稿がきっかけとなり、同世代の防災意識が高まったり、地域の支援につながる大きなやりがいがあります。</li>
+              <li><b>実践的なスキルが身につく：</b> SNS運用や記事執筆、画像・動画デザインなど将来役立つスキルが身につきます。</li>
+              <li><b>全国の志の高い仲間と出会える：</b> 全国の仲間と一緒にプロジェクトを作り上げる達成感があります。</li>
+            </>
+          )}
         </ul>
 
-        <div class="section-h3">主な活動内容</div>
+        <div class="section-h3">
+          {currentLang === 'en' ? 'Main Activities' : '主な活動内容'}
+        </div>
         <ul>
-          <li>公式SNS（Instagram、X、Note等）の企画・運用・発信</li>
-          <li>Webサイト更新や記事執筆、プレスリリース、イベント告知画像の作成</li>
-          <li>イベント・講座等の記録発信</li>
+          {currentLang === 'en' ? (
+            <>
+              <li>Planning, operating, and posting on official SNS (Instagram, X, Note, etc.)</li>
+              <li>Website updates, article writing, press releases, and event banner design</li>
+              <li>Recording and reporting on events and seminars</li>
+            </>
+          ) : (
+            <>
+              <li>公式SNS（Instagram、X、Note等）の企画・運用・発信</li>
+              <li>Webサイト更新や記事執筆、プレスリリース、イベント告知画像の作成</li>
+              <li>イベント・講座等の記録発信</li>
+            </>
+          )}
         </ul>
 
-        <div class="section-h3">募集条件（必須・歓迎）</div>
+        <div class="section-h3">
+          {currentLang === 'en' ? 'Requirements (Essential & Welcome)' : '募集条件（必須・歓迎）'}
+        </div>
         <ul>
-          <li><b>基本的な報連相（報告・連絡・相談）がしっかりできる方</b></li>
-          <li><b>Discord（ディスコード）の導入・利用ができる方</b>（チーム内の連絡ツールとして使用します）</li>
-          <li><b>Canvaなどのデザインツール・画像制作ツールを使用できる環境をお持ちの方</b></li>
-          <li><b>不定期開催のミーティング（MTG）に参加可能な方</b></li>
-          <li><b>特定非営利活動法人 日本若者防災復興協会への加入が必須となります</b></li>
+          {currentLang === 'en' ? (
+            <>
+              <li><b>Ability to communicate effectively (Report, Contact, Consult)</b></li>
+              <li><b>Ability to install and use Discord</b> (Used as team communication tool)</li>
+              <li><b>Environment to use design/image creation tools like Canva</b></li>
+              <li><b>Ability to attend irregular meetings (MTG)</b></li>
+              <li><b>Membership in Japan Youth Resilience Action Consortium is required</b></li>
+            </>
+          ) : (
+            <>
+              <li><b>基本的な報連相（報告・連絡・相談）がしっかりできる方</b></li>
+              <li><b>Discord（ディスコード）の導入・利用ができる方</b>（チーム内の連絡ツールとして使用します）</li>
+              <li><b>Canvaなどのデザインツール・画像制作ツールを使用できる環境をお持ちの方</b></li>
+              <li><b>不定期開催のミーティング（MTG）に参加可能な方</b></li>
+              <li><b>特定非営利活動法人 日本若者防災復興協会への加入が必須となります</b></li>
+            </>
+          )}
         </ul>
 
         <div class="cta-area">
           <a href="https://docs.google.com/forms/d/e/1FAIpQLScv5WAo-g4J7_vufh_NbB-dqhACP9iQihiBCtrK8XJWa2lM_g/viewform?usp=send_form" target="_blank" rel="noopener noreferrer" class="cta-btn">
-            応募・お問い合わせフォームはこちら ➔
+            {currentLang === 'en' 
+              ? 'Open Application / Inquiry Form ➔' 
+              : '応募・お問い合わせフォームはこちら ➔'}
           </a>
         </div>
       </div>
