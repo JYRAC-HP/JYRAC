@@ -1,27 +1,68 @@
 ---
+// src/pages/governance.astro
 import Layout from '../layouts/Layout.astro';
+import { translations, type Lang } from '../lib/i18n';
+
+// URLから言語パラメーターを取得 (例: ?lang=en)
+const url = new URL(Astro.request.url);
+const currentLang: Lang = url.searchParams.get("lang") === "en" ? "en" : "ja";
+const t = translations[currentLang];
 ---
 
-<Layout title="情報公開・設立公告 | 日本若者防災復興協会" currentTab="governance">
+<Layout 
+    title={currentLang === 'en' ? 'Governance & Public Notice | JYRAC' : '情報公開・設立公告 | 日本若者防災復興協会'} 
+    currentTab="governance"
+>
     <div class="content-panel">
-        <h2>情報公開・設立公告</h2>
+        <h2>
+            {currentLang === 'en' ? 'Governance & Public Notice' : '情報公開・設立公告'}
+        </h2>
+
         <div class="alert-box" style="background-color: #eafaf1; border-left: 4px solid #2ecc71; color: #27ae60; padding: 15px; margin-bottom: 20px; border-radius: 4px; font-weight: bold;">
-            <strong>【特定非営利活動法人 設立登記完了に関するお知らせ】</strong><br>
-            当団体は、特定非営利活動促進法第10条第1項の規定に基づき東京都知事へ設立認証申請を行い、正式に認証を受けた後、東京法務局にて設立登記の手続きを完了し、正式に法人として成立いたしました。
+            <strong>
+                {currentLang === 'en' 
+                    ? '[Notice Regarding Completion of NPO Incorporation Registration]' 
+                    : '【特定非営利活動法人 設立登記完了に関するお知らせ】'}
+            </strong><br>
+            {currentLang === 'en'
+                ? 'In accordance with Article 10, Paragraph 1 of the Act on Promotion of Specified Non-profit Activities, our organization applied for certification of establishment to the Governor of Tokyo. After receiving official approval, we completed incorporation registration at the Tokyo Legal Affairs Bureau and officially became an incorporated entity.'
+                : '当団体は、特定非営利活動促進法第10条第1項の規定に基づき東京都知事へ設立認証申請を行い、正式に認証を受けた後、東京法務局にて設立登記の手続きを完了し、正式に法人として成立いたしました。'}
         </div>
-        <h3>縦覧（申請）書類・法人情報</h3>
+
+        <h3>
+            {currentLang === 'en' ? 'Public Application Documents & Corporate Information' : '縦覧（申請）書類・法人情報'}
+        </h3>
+
         <table class="info-table">
-            <tr><th>設立（成立）年月日</th><td>令和8年6月21日</td></tr>
-            <tr><th>認証年月日</th><td>正式認証済</td></tr>
-            <tr><th>所轄庁</th><td>東京都（生活文化スポーツ局 都民生活部 管理法人課）</td></tr>
-            <tr><th>主たる事務所</th><td>東京都文京区</td></tr>
             <tr>
-                <th>公開書類</th>
+                <th>{currentLang === 'en' ? 'Establishment Date' : '設立（成立）年月日'}</th>
+                <td>{currentLang === 'en' ? 'June 21, 2026' : '令和8年6月21日'}</td>
+            </tr>
+            <tr>
+                <th>{currentLang === 'en' ? 'Approval Status' : '認証年月日'}</th>
+                <td>{currentLang === 'en' ? 'Officially Certified' : '正式認証済'}</td>
+            </tr>
+            <tr>
+                <th>{currentLang === 'en' ? 'Competent Authority' : '所轄庁'}</th>
+                <td>
+                    {currentLang === 'en' 
+                        ? 'Tokyo Metropolitan Government (Bureau of Citizens, Culture and Sports)' 
+                        : '東京都（生活文化スポーツ局 都民生活部 管理法人課）'}
+                </td>
+            </tr>
+            <tr>
+                <th>{currentLang === 'en' ? 'Principal Office' : '主たる事務所'}</th>
+                <td>{currentLang === 'en' ? 'Bunkyo-ku, Tokyo' : '東京都文京区'}</td>
+            </tr>
+            <tr>
+                <th>{currentLang === 'en' ? 'Public Documents' : '公開書類'}</th>
                 <td>
                     <ul style="margin: 0; padding-left: 20px;">
                         <li style="margin-bottom: 8px;">
-                            <a href="https://drive.google.com/file/d/1LXItvQ8IgZbzPygGrHyoaYjicA4a5bK5/view?usp=sharing" target="_blank" style="color: #3498db; text-decoration: underline; font-weight: bold;">
-                                設立関連書類一式（定款・設立趣旨書・事業計画書 等）[Google Drive]
+                            <a href="https://drive.google.com/file/d/1LXItvQ8IgZbzPygGrHyoaYjicA4a5bK5/view?usp=sharing" target="_blank" rel="noopener noreferrer" style="color: #3498db; text-decoration: underline; font-weight: bold;">
+                                {currentLang === 'en' 
+                                    ? 'Establishment Documents Set (Articles of Incorporation, Prospectus, Business Plan, etc.) [Google Drive]' 
+                                    : '設立関連書類一式（定款・設立趣旨書・事業計画書 等）[Google Drive]'}
                             </a>
                         </li>
                     </ul>
