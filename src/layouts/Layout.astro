@@ -117,6 +117,11 @@ const currentPath = Astro.url.pathname;
             justify-content: space-between;
             align-items: center;
         }
+        .brand-zone {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+        }
         .brand-zone h1 {
             margin: 0;
             font-size: 22px;
@@ -125,6 +130,7 @@ const currentPath = Astro.url.pathname;
             display: flex;
             align-items: center;
             gap: 10px;
+            flex-wrap: wrap;
         }
         .brand-zone h1 span {
             font-size: 10px;
@@ -321,9 +327,25 @@ const currentPath = Astro.url.pathname;
             line-height: 1.8;
         }
 
+        /* レスポンシブ（スマホ表示）修正 */
         @media (max-width: 850px) {
             header { padding: 20px; }
             .header-container { flex-direction: column; gap: 12px; text-align: center; }
+            
+            .brand-zone {
+                align-items: center !important;
+                text-align: center !important;
+                width: 100%;
+            }
+            .brand-zone h1 {
+                justify-content: center !important;
+                text-align: center !important;
+                word-break: break-word;
+            }
+            .subtitle {
+                text-align: center !important;
+            }
+
             .dashboard-container { flex-direction: column; margin: 20px auto; gap: 24px; }
             aside { width: 100%; }
             .side-menu { display: grid; grid-template-columns: 1fr 1fr; border-radius: 16px; gap: 10px; }
