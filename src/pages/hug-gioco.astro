@@ -3,50 +3,69 @@
 // 1. DATA LAYER (Astroフロントマターでデータを一元管理)
 // ==========================================
 import Layout from '../layouts/Layout.astro';
+import { translations, type Lang } from '../lib/i18n';
 
+// URLから言語パラメーターを取得 (例: ?lang=en)
+const url = new URL(Astro.request.url);
+const currentLang: Lang = url.searchParams.get("lang") === "en" ? "en" : "ja";
+const t = translations[currentLang];
+const langParam = currentLang === 'en' ? '?lang=en' : '';
+
+// 言語に応じたカードデータ
 const CARDS = [
-  { id: 1, c: 'dis', txt: '避難所に指定された学校の体育館。外は激しい雨と風。', e: '⛈️' },
-  { id: 2, c: 'dis', txt: '夜間に大きな地震が発生。周辺一帯が停電している。', e: '🌑' },
-  { id: 3, c: 'dis', txt: '真冬の寒波のなか地震が発生。暖房が効かない。', e: '❄️' },
-  { id: 4, c: 'dis', txt: '台風による大雨で、近くの河川の水位が警戒レベルに。', e: '🌊' },
-  { id: 5, c: 'time', txt: '発災から「3時間後」。最初の避難者が次々と押し寄せる。', e: '⏳' },
-  { id: 6, c: 'time', txt: '発災から「24時間後（1日目）」。仮設トイレが届く。', e: '🌅' },
-  { id: 7, c: 'time', txt: '発災から「3日後（72時間）」。救援物資の第一陣が到着。', e: '📅' },
-  { id: 8, c: 'fac', txt: '体育館のほか、教室3室と多目的ホールが使用可能。', e: '🏫' },
-  { id: 9, c: 'fac', txt: '学校の受水槽が生きており、水は出るが流せない。', e: '🚰' },
-  { id: 10, c: 'fac', txt: '備蓄倉庫からアルファ米300食と毛布50枚を発見。', e: '📦' },
-  { id: 11, c: 'peo', txt: '乳幼児を連れた母親。授乳スペースを求めている。', e: '👶' },
-  { id: 12, c: 'peo', txt: '車椅子の高齢者と、そのお世話をする家族。', e: '👨‍🦽' },
-  { id: 13, c: 'peo', txt: '日本語が苦手な外国人の家族（大人2人、子ども1人）。', e: '🗣️' },
-  { id: 14, c: 'peo', txt: 'ペット（大型犬）を連れて避難してきた飼い主。', e: '🐕' },
-  { id: 15, c: 'peo', txt: '修学旅行中の高校生グループ30名が避難を求めてきた。', e: '🎒' }
+  { id: 1, c: 'dis', txt: currentLang === 'en' ? 'School gymnasium designated as a shelter. Heavy rain and strong winds outside.' : '避難所に指定された学校の体育館。外は激しい雨と風。', e: '⛈️' },
+  { id: 2, c: 'dis', txt: currentLang === 'en' ? 'Major earthquake at night. Total blackout across the surrounding area.' : '夜間に大きな地震が発生。周辺一帯が停電している。', e: '🌑' },
+  { id: 3, c: 'dis', txt: currentLang === 'en' ? 'Earthquake during a severe midwinter cold wave. Heating is unavailable.' : '真冬の寒波のなか地震が発生。暖房が効かない。', e: '❄️' },
+  { id: 4, c: 'dis', txt: currentLang === 'en' ? 'Heavy rain caused by a typhoon. Nearby river level reaches warning status.' : '台風による大雨で、近くの河川の水位が警戒レベルに。', e: '🌊' },
+  { id: 5, c: 'time', txt: currentLang === 'en' ? '3 hours after disaster. The first wave of evacuees pours in.' : '発災から「3時間後」。最初の避難者が次々と押し寄せる。', e: '⏳' },
+  { id: 6, c: 'time', txt: currentLang === 'en' ? '24 hours after disaster (Day 1). Temporary toilets arrive.' : '発災から「24時間後（1日目）」。仮設トイレが届く。', e: '🌅' },
+  { id: 7, c: 'time', txt: currentLang === 'en' ? '3 days (72 hours) after disaster. First shipment of relief supplies arrives.' : '発災から「3日後（72時間）」。救援物資の第一陣が到着。', e: '📅' },
+  { id: 8, c: 'fac', txt: currentLang === 'en' ? 'In addition to the gym, 3 classrooms and a multipurpose hall are available.' : '体育館のほか、教室3室と多目的ホールが使用可能。', e: '🏫' },
+  { id: 9, c: 'fac', txt: currentLang === 'en' ? 'School water tank is functional; water runs but toilets cannot be flushed.' : '学校の受水槽が生きており、水は出るが流せない。', e: '🚰' },
+  { id: 10, c: 'fac', txt: currentLang === 'en' ? 'Found 300 meals of pre-cooked rice and 50 blankets in the emergency storehouse.' : '備蓄倉庫からアルファ米300食と毛布50枚を発見。', e: '📦' },
+  { id: 11, c: 'peo', txt: currentLang === 'en' ? 'A mother with an infant looking for a nursing space.' : '乳幼児を連れた母親。授乳スペースを求めている。', e: '👶' },
+  { id: 12, c: 'peo', txt: currentLang === 'en' ? 'An elderly person in a wheelchair and their family caregiver.' : '車椅子の高齢者と、そのお世話をする家族。', e: '👨‍🦽' },
+  { id: 13, c: 'peo', txt: currentLang === 'en' ? 'A foreign family with limited Japanese skills (2 adults, 1 child).' : '日本語が苦手な外国人の家族（大人2人、子ども1人）。', e: '🗣️' },
+  { id: 14, c: 'peo', txt: currentLang === 'en' ? 'An evacuee who arrived with a large pet dog.' : 'ペット（大型犬）を連れて避難してきた飼い主。', e: '🐕' },
+  { id: 15, c: 'peo', txt: currentLang === 'en' ? 'A group of 30 high school students on a field trip seeking shelter.' : '修学旅行中の高校生グループ30名が避難を求めてきた。', e: '🎒' }
 ];
 
 const DISCUSSIONS = {
-  t: ['マンホールトイレや仮設トイレをどこに設置するか？', '誰を優先して使ってもらうルールにするか？', 'トイレの清鎖やゴミ出しの担当をどう決めるか？'],
-  k: ['炊き出しや物資の配布場所をどこに設けるか？', 'アレルギーや宗教上の配慮が必要な人への対応は？', '貴重な水や燃料をどう管理・節約するか？'],
-  b: ['通路を確保しつつ、プライベート空間をどう作るか？', '高齢者や要配慮者のベッド位置をどこにするか？', '体育館の床の冷たさや硬さを防ぐ工夫は？']
+  t: currentLang === 'en' 
+    ? ['Where should manhole or temporary toilets be installed?', 'What rules should determine priority access to toilets?', 'How to assign responsibilities for toilet cleaning and waste disposal?']
+    : ['マンホールトイレや仮設トイレをどこに設置するか？', '誰を優先して使ってもらうルールにするか？', 'トイレの清掃やゴミ出しの担当をどう決めるか？'],
+  k: currentLang === 'en'
+    ? ['Where should soup kitchens and supply distribution points be set up?', 'How to handle evacuees with food allergies or religious restrictions?', 'How to manage and conserve precious water and fuel?']
+    : ['炊き出しや物資の配布場所をどこに設けるか？', 'アレルギーや宗教上の配慮が必要な人への対応は？', '貴重な水や燃料をどう管理・節約するか？'],
+  b: currentLang === 'en'
+    ? ['How to create private spaces while maintaining access pathways?', 'Where to locate beds for the elderly and people with special needs?', 'How to mitigate cold and hard gymnasium floors?']
+    : ['通路を確保しつつ、プライベート空間をどう作るか？', '高齢者や要配慮者のベッド位置をどこにするか？', '体育館の床の冷たさや硬さを防ぐ工夫は？']
 };
 
 const CH_CARDS = [
-  { id: 'ch1', c: 'con', txt: '避難所内の連絡・情報共有をどう行うか？', e: '📢' },
-  { id: 'ch2', c: 'con', txt: '外部（役場や救急）との通信手段の確保は？', e: '📱' },
-  { id: 'ch3', c: 'sup', txt: '届いた物資の仕分け・管理の担当者をどうするか？', e: '🤝' },
-  { id: 'ch4', c: 'sup', txt: '避難者同士のトラブル（騒音・ペット等）の対応は？', e: '⚡' }
+  { id: 'ch1', c: 'con', txt: currentLang === 'en' ? 'How to handle communication and information sharing inside the shelter?' : '避難所内の連絡・情報共有をどう行うか？', e: '📢' },
+  { id: 'ch2', c: 'con', txt: currentLang === 'en' ? 'How to secure communication lines with external agencies (municipal office, EMS)?' : '外部（役場や救急）との通信手段の確保は？', e: '📱' },
+  { id: 'ch3', c: 'sup', txt: currentLang === 'en' ? 'Who should be assigned to sort and manage incoming relief supplies?' : '届いた物資の仕分け・管理の担当者をどうするか？', e: '🤝' },
+  { id: 'ch4', c: 'sup', txt: currentLang === 'en' ? 'How to handle interpersonal conflicts among evacuees (noise, pets, etc.)?' : '避難者同士のトラブル（騒音・ペット等）の対応は？', e: '⚡' }
 ];
 ---
 
-<Layout title="HUG Gioco — TKB型避難所運営ディスカッションゲーム" currentTab="gioco">
+<Layout 
+  title={currentLang === 'en' ? 'HUG Gioco — TKB Evacuation Shelter Management Game' : 'HUG Gioco — TKB型避難所運営ディスカッションゲーム'} 
+  currentTab="gioco"
+>
   
   <div class="gioco-local-wrapper" id="jyrac-gioco-root">
     
     <header class="game-inner-header">
       <div class="titles-area">
         <b>HUG Gioco</b>
-        <span>TKB型避難所運営ディスカッションゲーム</span>
+        <span>{currentLang === 'en' ? 'TKB Evacuation Shelter Discussion Game' : 'TKB型避難所運営ディスカッションゲーム'}</span>
       </div>
       <div class="nav-spacer"></div>
-      <a href="/gioco" class="btn-back-to-site">JYRACサイトに戻る ➔</a>
+      <a href={`/gioco${langParam}`} class="btn-back-to-site">
+        {currentLang === 'en' ? '➔ Back to JYRAC Site' : 'JYRACサイトに戻る ➔'}
+      </a>
       <div class="step-dots">
         <i id="dot-0" class="on"></i>
         <i id="dot-1"></i>
@@ -66,195 +85,260 @@ const CH_CARDS = [
             <div class="logo-g2">G</div>
             <div class="logo-text-gioco">Gioco</div>
           </div>
-          <span class="sub">TKB型避難所運営ディスカッションゲーム</span>
+          <span class="sub">{currentLang === 'en' ? 'TKB Evacuation Shelter Discussion Game' : 'TKB型避難所運営ディスカッションゲーム'}</span>
         </div>
 
         <p class="desc">
-          カードを引いて、避難所の<span class="highlight-text">「困った」</span>をみんなで考えよう。
+          {currentLang === 'en' ? (
+            <>Draw cards and think together about shelter <span class="highlight-text">"challenges"</span>.</>
+          ) : (
+            <>カードを引いて、避難所の<span class="highlight-text">「困った」</span>をみんなで考えよう。</>
+          )}
         </p>
 
         <div class="setup-box">
-          <h3>🎮 ゲームをはじめる準備</h3>
+          <h3>🎮 {currentLang === 'en' ? 'Game Setup' : 'ゲームをはじめる準備'}</h3>
           
           <div class="setup-group">
-            <label>① プレイ人数を選んでください</label>
+            <label>{currentLang === 'en' ? '① Select Number of Players' : '① プレイ人数を選んでください'}</label>
             <div class="radio-tile-group">
               <label class="radio-tile">
-                <input type="radio" name="play-mode" value="1人（個人ワーク）" checked />
-                <span>👤 1人</span>
+                <input type="radio" name="play-mode" value={currentLang === 'en' ? 'Solo (1 Person)' : '1人（個人ワーク）'} checked />
+                <span>👤 {currentLang === 'en' ? '1 Player' : '1人'}</span>
               </label>
               <label class="radio-tile">
-                <input type="radio" name="play-mode" value="2〜4人グループ" />
-                <span>👥 2〜4人</span>
+                <input type="radio" name="play-mode" value={currentLang === 'en' ? '2-4 Players' : '2〜4人グループ'} />
+                <span>👥 {currentLang === 'en' ? '2-4 Players' : '2〜4人'}</span>
               </label>
               <label class="radio-tile">
-                <input type="radio" name="play-mode" value="5人以上のグループ" />
-                <span>🏫 5人以上</span>
+                <input type="radio" name="play-mode" value={currentLang === 'en' ? '5+ Players' : '5人以上のグループ'} />
+                <span>🏫 {currentLang === 'en' ? '5+ Players' : '5人以上'}</span>
               </label>
             </div>
           </div>
 
           <div class="setup-group">
-            <label>② 難易度を選んでください</label>
+            <label>{currentLang === 'en' ? '② Select Difficulty Level' : '② 難易度を選んでください'}</label>
             <div class="radio-tile-group">
               <label class="radio-tile">
                 <input type="radio" name="difficulty" value="easy" />
-                <span class="diff-text easy">🔰 初級 (穏やか)</span>
+                <span class="diff-text easy">🔰 {currentLang === 'en' ? 'Easy (Mild)' : '初級 (穏やか)'}</span>
               </label>
               <label class="radio-tile">
                 <input type="radio" name="difficulty" value="normal" checked />
-                <span class="diff-text normal">⚖️ 中級 (標準)</span>
+                <span class="diff-text normal">⚖️ {currentLang === 'en' ? 'Normal (Standard)' : '中級 (標準)'}</span>
               </label>
               <label class="radio-tile">
                 <input type="radio" name="difficulty" value="hard" />
-                <span class="diff-text hard">🚨 上級 (修羅場)</span>
+                <span class="diff-text hard">🚨 {currentLang === 'en' ? 'Hard (Severe)' : '上級 (修羅場)'}</span>
               </label>
             </div>
           </div>
 
           <div style="text-align: center; margin-top: 30px;">
-            <button id="btn-start-game" class="game-btn big sun" type="button">🚀 ゲームを開始する</button>
+            <button id="btn-start-game" class="game-btn big sun" type="button">
+              🚀 {currentLang === 'en' ? 'Start Game' : 'ゲームを開始する'}
+            </button>
           </div>
         </div>
       </div>
 
       <div id="view-1" class="view">
         <div class="screen-head">
-          <h2>STEP 1: 避難所の状況を生成する</h2>
+          <h2>{currentLang === 'en' ? 'STEP 1: Generate Shelter Scenario' : 'STEP 1: 避難所の状況を生成する'}</h2>
         </div>
         <p class="desc">
-          「カードを引く」ボタンを押すと、あなたが割り当てられた避難所の環境がランダムに決定します。
+          {currentLang === 'en'
+            ? 'Click "Draw Cards" to randomly determine your assigned shelter conditions.'
+            : '「カードを引く」ボタンを押すと、あなたが割り当てられた避難所の環境がランダムに決定します。'}
         </p>
 
         <div class="tkb-badge-row">
-          <span class="tkb-badge t">🚾 T: Toilet (トイレ対策)</span>
-          <span class="tkb-badge k">🍳 K: Kitchen (食事・炊き出し)</span>
-          <span class="tkb-badge b">🛏️ B: Bed (快適な睡眠・居住)</span>
+          <span class="tkb-badge t">🚾 T: Toilet ({currentLang === 'en' ? 'Sanitation' : 'トイレ対策'})</span>
+          <span class="tkb-badge k">🍳 K: Kitchen ({currentLang === 'en' ? 'Food & Water' : '食事・炊き出し'})</span>
+          <span class="tkb-badge b">🛏️ B: Bed ({currentLang === 'en' ? 'Comfort & Living' : '快適な睡眠・居住'})</span>
         </div>
 
         <div style="text-align: center; margin: 28px 0 20px;">
-          <button id="btn-draw" class="game-btn big" type="button">🎲 カードを引いて状況を作る</button>
+          <button id="btn-draw" class="game-btn big" type="button">
+            🎲 {currentLang === 'en' ? 'Draw Cards to Create Scenario' : 'カードを引いて状況を作る'}
+          </button>
         </div>
 
         <div id="sit-cards" class="cards"></div>
 
         <div style="text-align: center; margin-top: 40px;">
-          <button id="btn-next-step1" class="game-btn green" type="button" disabled>次へ進む（課題検討） ➔</button>
+          <button id="btn-next-step1" class="game-btn green" type="button" disabled>
+            {currentLang === 'en' ? 'Next Step (Discussion) ➔' : '次へ進む（課題検討） ➔'}
+          </button>
         </div>
       </div>
 
       <div id="view-2" class="view">
         <div class="screen-head">
-          <h2>STEP 2: TKBの課題に向き合う</h2>
-          <span class="tag">グループワーク</span>
+          <h2>{currentLang === 'en' ? 'STEP 2: Tackle TKB Challenges' : 'STEP 2: TKBの課題に向き合う'}</h2>
+          <span class="tag">{currentLang === 'en' ? 'Group Work' : 'グループワーク'}</span>
         </div>
 
         <div class="situation">
-          <div class="lbl">現在のシチュエーション設定</div>
+          <div class="lbl">{currentLang === 'en' ? 'Current Scenario Setup' : '現在のシチュエーション設定'}</div>
           <p id="step2-sit-text"></p>
         </div>
 
         <div class="note-line">
-          💡 下記の<b>T・K・Bそれぞれの問い</b>について、「何が問題になるか」「どう対応するか」を話し合ってみましょう。
+          💡 {currentLang === 'en' 
+            ? <>Discuss <b>what problems might occur and how to respond</b> for each T, K, and B question below.</>
+            : <>下記の<b>T・K・Bそれぞれの問い</b>について、「何が問題になるか」「どう対応するか」を話し合ってみましょう。</>}
         </div>
 
         <div id="q-cards-box" class="q-groups"></div>
 
         <div class="section-label">
-          <span class="pill">記録メモ</span> ワーク中の気づきや意見をメモしよう
+          <span class="pill">{currentLang === 'en' ? 'Notes' : '記録メモ'}</span> 
+          {currentLang === 'en' ? 'Note down insights and ideas during the session' : 'ワーク中の気づきや意見をメモしよう'}
         </div>
 
         <div class="memo-grid">
           <div class="memo m1">
-            <label>① 今回の状況で「想定される課題」は？</label>
-            <textarea data-memo="issues" placeholder="例：停電しているので夜間のトイレが非常に危険、物資の毛布50枚に対して避難者が多すぎる、など"></textarea>
+            <label>{currentLang === 'en' ? '① Expected challenges in this situation?' : '① 今回の状況で「想定される課題」は？'}</label>
+            <textarea data-memo="issues" placeholder={currentLang === 'en' ? 'e.g., Blackout makes nighttime toilets dangerous; 50 blankets are far too few for the number of evacuees.' : '例：停電しているので夜間のトイレが非常に危険、物資の毛布50枚に対して避難者が多すぎる、など'}></textarea>
           </div>
           <div class="memo m2">
-            <label>② 「特に配慮が必要な人」は誰？</label>
-            <textarea data-memo="care" placeholder="例：日本語が不慣れな外国人家族への案内掲示、乳幼児の泣き声や授乳のための個室教室の割り当て、など"></textarea>
+            <label>{currentLang === 'en' ? '② Who needs special consideration?' : '② 「特に配慮が必要な人」は誰？'}</label>
+            <textarea data-memo="care" placeholder={currentLang === 'en' ? 'e.g., Multilingual signs for foreign families; quiet private room for nursing mothers and infants.' : '例：日本語が不慣れな外国人家族への案内掲示、乳幼児の泣き声や授乳のための個室教室の割り当て、など'}></textarea>
           </div>
         </div>
 
         <div class="final-actions">
-          <button id="btn-back-step2" class="game-btn ghost small" type="button">🔀 状況を引き直す</button>
-          <button id="btn-next-step2" class="game-btn green" type="button">次へ進む（アクシデント発生確認） ➔</button>
+          <button id="btn-back-step2" class="game-btn ghost small" type="button">
+            🔀 {currentLang === 'en' ? 'Redraw Scenario' : '状況を引き直す'}
+          </button>
+          <button id="btn-next-step2" class="game-btn green" type="button">
+            {currentLang === 'en' ? 'Next Step (Check Incident) ➔' : '次へ進む（アクシデント発生確認） ➔'}
+          </button>
         </div>
       </div>
 
       <div id="view-3" class="view">
         <div class="screen-head">
-          <h2>STEP 3: 突然のアクシデント・運営課題</h2>
-          <span id="incident-tag" class="tag" style="background:#fde3e5; color:var(--red);">トラブル対応</span>
+          <h2>{currentLang === 'en' ? 'STEP 3: Sudden Incident & Management Issue' : 'STEP 3: 突然のアクシデント・運営課題'}</h2>
+          <span id="incident-tag" class="tag" style="background:#fde3e5; color:var(--red);">{currentLang === 'en' ? 'Incident Response' : 'トラブル対応'}</span>
         </div>
 
         <div id="incident-alert" class="note-line" style="background:#fde3e5; border-color:var(--red); color:var(--red-deep);">
-          ⚠️ <b>追加チャレンジ発生！</b> 運営ディスカッションを進める中、さらに以下のアクシデントや追加の運営問題が発生しました。どう乗り越えますか？
+          ⚠️ <b>{currentLang === 'en' ? 'Additional Challenge!' : '追加チャレンジ発生！'}</b> 
+          {currentLang === 'en' 
+            ? ' As discussion progressed, an additional incident occurred. How will you overcome this?' 
+            : ' 運営ディスカッションを進める中、さらに以下のアクシデントが発生しました。どう乗り越えますか？'}
         </div>
 
         <div id="ch-cards-box" class="cards"></div>
 
         <div class="memo-grid">
           <div class="memo m3">
-            <label>③ 混乱を防ぐために「今すぐ必要な対応」は？</label>
-            <textarea data-memo="now" placeholder="例：修学旅行中の元気な高校生たちに物資搬入やゴミ集積の手伝いチームを結成してもらう、など"></textarea>
+            <label>{currentLang === 'en' ? '③ Immediate actions needed to prevent confusion?' : '③ 混乱を防ぐために「今すぐ必要な対応」は？'}</label>
+            <textarea data-memo="now" placeholder={currentLang === 'en' ? 'e.g., Organize energetic student volunteers to assist with supply unloading and waste management.' : '例：修学旅行中の元気な高校生たちに物資搬入やゴミ集積の手伝いチームを結成してもらう、など'}></textarea>
           </div>
           <div class="memo m4">
-            <label>④ 普段の生活から「事前に準備すべきこと」は？</label>
-            <textarea data-memo="prep" placeholder="例：学校の備蓄品見直し、防災訓練の実施など"></textarea>
+            <label>{currentLang === 'en' ? '④ What should be prepared in advance?' : '④ 普段の生活から「事前に準備すべきこと」は？'}</label>
+            <textarea data-memo="prep" placeholder={currentLang === 'en' ? 'e.g., Review school emergency stockpiles; conduct regular disaster drills.' : '例：学校の備蓄品見直し、防災訓練の実施など'}></textarea>
           </div>
         </div>
 
         <div class="final-actions">
-          <button id="btn-back-step3" class="game-btn ghost small" type="button">⬅ 戻る</button>
-          <button id="btn-next-step3" class="game-btn green" type="button">シートをまとめて完成！ ➔</button>
+          <button id="btn-back-step3" class="game-btn ghost small" type="button">
+            ⬅ {currentLang === 'en' ? 'Back' : '戻る'}
+          </button>
+          <button id="btn-next-step3" class="game-btn green" type="button">
+            {currentLang === 'en' ? 'Complete Sheet! ➔' : 'シートをまとめて完成！ ➔'}
+          </button>
         </div>
       </div>
 
       <div id="view-4" class="view">
-        <div class="screen-head"><h2>HUG Gioco ワーク記録シート</h2></div>
+        <div class="screen-head">
+          <h2>{currentLang === 'en' ? 'HUG Gioco Worksheet Record' : 'HUG Gioco ワーク記録シート'}</h2>
+        </div>
         <div class="review-box">
-          <div class="r-item"><h5>設定シチュエーション</h5><div id="rSit" class="content"></div></div>
-          <div class="r-item"><h5>Q1. 今回の状況で「想定される課題」</h5><div class="content" data-r="issues"></div></div>
-          <div class="r-item"><h5>Q2. 「特に配慮が必要な人」への気づき</h5><div class="content" data-r="care"></div></div>
-          <div class="r-item"><h5>Q3. トラブルを防ぐために「今すぐ必要な対応」</h5><div class="content" data-r="now"></div></div>
-          <div class="r-item"><h5>Q4. 防災のために「事前に準備・備蓄すべきこと」</h5><div class="content" data-r="prep"></div></div>
+          <div class="r-item">
+            <h5>{currentLang === 'en' ? 'Scenario Settings' : '設定シチュエーション'}</h5>
+            <div id="rSit" class="content"></div>
+          </div>
+          <div class="r-item">
+            <h5>{currentLang === 'en' ? 'Q1. Expected Challenges in this Scenario' : 'Q1. 今回の状況で「想定される課題」'}</h5>
+            <div class="content" data-r="issues"></div>
+          </div>
+          <div class="r-item">
+            <h5>{currentLang === 'en' ? 'Q2. Insights for Special Considerations' : 'Q2. 「特に配慮が必要な人」への気づき'}</h5>
+            <div class="content" data-r="care"></div>
+          </div>
+          <div class="r-item">
+            <h5>{currentLang === 'en' ? 'Q3. Immediate Response to Prevent Confusion' : 'Q3. トラブルを防ぐために「今すぐ必要な対応」'}</h5>
+            <div class="content" data-r="now"></div>
+          </div>
+          <div class="r-item">
+            <h5>{currentLang === 'en' ? 'Q4. Advance Preparations & Stockpiles' : 'Q4. 防災のために「事前に準備・備蓄すべきこと」'}</h5>
+            <div class="content" data-r="prep"></div>
+          </div>
           
           <div class="r-item">
-            <h5>Q5. 感想・振り返り、または地域へのアイデア</h5>
+            <h5>{currentLang === 'en' ? 'Q5. Reflections, Feedback & Community Ideas' : 'Q5. 感想・振り返り、または地域へのアイデア'}</h5>
             <div class="memo m5" style="border:none; padding:0; box-shadow:none;">
-              <textarea data-memo="propose" placeholder="例：プレイしてみた感想や、地域の防災訓練に活かせるアイデアなど" style="min-height:100px; margin-top:8px;"></textarea>
+              <textarea data-memo="propose" placeholder={currentLang === 'en' ? 'e.g., Reflections after playing, ideas to apply to local disaster training, etc.' : '例：プレイしてみた感想や、地域の防災訓練に活かせるアイデアなど'} style="min-height:100px; margin-top:8px;"></textarea>
             </div>
           </div>
         </div>
         
         <div class="final-actions">
-          <button id="btn-back-step4" class="game-btn ghost small" type="button">⬅ 修正する</button>
-          <button id="btn-copy" class="game-btn sun" type="button">📋 テキストコピー</button>
-          <button id="btn-print" class="game-btn sky" type="button">🖨️ A4用紙に印刷</button>
-          <button id="btn-submit-sheet" class="game-btn green" type="button">☁️ 管理シートに記録して終了</button>
-          <button id="btn-restart" class="game-btn red" type="button">🔄 最初からやり直す</button>
+          <button id="btn-back-step4" class="game-btn ghost small" type="button">
+            ⬅ {currentLang === 'en' ? 'Edit' : '修正する'}
+          </button>
+          <button id="btn-copy" class="game-btn sun" type="button">
+            📋 {currentLang === 'en' ? 'Copy Text' : 'テキストコピー'}
+          </button>
+          <button id="btn-print" class="game-btn sky" type="button">
+            🖨️ {currentLang === 'en' ? 'Print A4' : 'A4用紙に印刷'}
+          </button>
+          <button id="btn-submit-sheet" class="game-btn green" type="button">
+            ☁️ {currentLang === 'en' ? 'Submit to Sheet & Finish' : '管理シートに記録して終了'}
+          </button>
+          <button id="btn-restart" class="game-btn red" type="button">
+            🔄 {currentLang === 'en' ? 'Restart Game' : '最初からやり直す'}
+          </button>
         </div>
-        <div class="footer-note"><b>HUG Gioco (ジョッコ)</b> — TKB型避難所運営ディスカッションゲーム<br>協力：日本若者防災復興協会（JYRAC）</div>
+        <div class="footer-note">
+          <b>HUG Gioco</b> — {currentLang === 'en' ? 'TKB Evacuation Shelter Discussion Game' : 'TKB型避難所運営ディスカッションゲーム'}<br>
+          {currentLang === 'en' ? 'Supported by Japan Youth Resilience Action Consortium (JYRAC)' : '協力：日本若者防災復興協会（JYRAC）'}
+        </div>
       </div>
 
       <div id="view-5" class="view">
         <div class="success-screen">
           <div class="success-icon">✨</div>
-          <h2>ワークシート送信完了！</h2>
-          <p class="success-msg">データは広報局の管理スプレッドシートに正常に記録されました。<br>貴重なご意見・ディスカッションの記録をありがとうございます！</p>
+          <h2>{currentLang === 'en' ? 'Worksheet Submitted!' : 'ワークシート送信完了！'}</h2>
+          <p class="success-msg">
+            {currentLang === 'en'
+              ? 'Your data has been successfully recorded in the PR management spreadsheet.\nThank you for your valuable feedback and discussion records!'
+              : 'データは広報局の管理スプレッドシートに正常に記録されました。\n貴重なご意見・ディスカッションの記録をありがとうございます！'}
+          </p>
           
           <div class="submitted-summary-box">
-            <h4>📥 送信内容のサマリー</h4>
-            <div class="summary-item"><strong>モード / 難易度:</strong> <span id="s-meta"></span></div>
-            <div class="summary-item"><strong>シチュエーション:</strong> <div id="s-sit" class="sum-content"></div></div>
-            <div class="summary-item"><strong>感想・提案:</strong> <div id="s-prop" class="sum-content"></div></div>
+            <h4>📥 {currentLang === 'en' ? 'Submission Summary' : '送信内容のサマリー'}</h4>
+            <div class="summary-item"><strong>{currentLang === 'en' ? 'Mode / Difficulty:' : 'モード / 難易度:'}</strong> <span id="s-meta"></span></div>
+            <div class="summary-item"><strong>{currentLang === 'en' ? 'Scenario:' : 'シチュエーション:'}</strong> <div id="s-sit" class="sum-content"></div></div>
+            <div class="summary-item"><strong>{currentLang === 'en' ? 'Reflections / Proposals:' : '感想・提案:'}</strong> <div id="s-prop" class="sum-content"></div></div>
           </div>
 
           <div style="text-align: center; margin-top: 35px;">
-            <button id="btn-finish-restart" class="game-btn big sun" type="button">🔄 もう一度新しくゲームを遊ぶ</button>
+            <button id="btn-finish-restart" class="game-btn big sun" type="button">
+              🔄 {currentLang === 'en' ? 'Play New Game Again' : 'もう一度新しくゲームを遊ぶ'}
+            </button>
           </div>
         </div>
-        <div class="footer-note"><b>HUG Gioco (ジョッコ)</b> — TKB型避難所運営ディスカッションゲーム<br>協力：日本若者防災復興協会（JYRAC）</div>
+        <div class="footer-note">
+          <b>HUG Gioco</b> — {currentLang === 'en' ? 'TKB Evacuation Shelter Discussion Game' : 'TKB型避難所運営ディスカッションゲーム'}<br>
+          {currentLang === 'en' ? 'Supported by Japan Youth Resilience Action Consortium (JYRAC)' : '協力：日本若者防災復興協会（JYRAC）'}
+        </div>
       </div>
 
     </div>
@@ -322,7 +406,7 @@ const CH_CARDS = [
   .success-icon { font-size: 4rem; margin-bottom: 15px; animation: float 2s ease-in-out infinite; }
   @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
   .success-screen h2 { color: var(--green); font-weight: 900; font-size: 1.8rem; margin-bottom: 12px; }
-  .success-msg { color: var(--ink-soft); font-weight: 500; font-size: 1.05rem; line-height: 1.6; margin-bottom: 30px; }
+  .success-msg { color: var(--ink-soft); font-weight: 500; font-size: 1.05rem; line-height: 1.6; margin-bottom: 30px; white-space: pre-line; }
   .submitted-summary-box { background: var(--white); border: 2px solid var(--line); border-radius: var(--radius-sm); padding: 20px; box-shadow: var(--shadow); text-align: left; }
   .submitted-summary-box h4 { color: var(--navy); font-weight: 800; margin: 0 0 15px 0; border-bottom: 2px dashed var(--line); padding-bottom: 8px; }
   .summary-item { margin-bottom: 12px; font-size: 0.95rem; }
@@ -411,7 +495,6 @@ const CH_CARDS = [
   .memo.m5 { border-left-color: #7a5cc0; }
   .memo label { font-weight: 800; color: var(--navy); display: block; margin-bottom: 8px; font-size: 0.95rem; }
   
-  /* 💡 修正点：入力欄のはみ出しを防ぐスタイルを追加 */
   .memo textarea { 
     width: 100%; 
     max-width: 100%; 
@@ -455,14 +538,16 @@ const CH_CARDS = [
 {/* ==========================================
 // 4. SCRIPT LAYER (進行・ゲームロジック・API送信：完全防御版)
 // ========================================== */}
-<script is:inline define:vars={{ CARDS, DISCUSSIONS, CH_CARDS }}>
+<script is:inline define:vars={{ CARDS, DISCUSSIONS, CH_CARDS, currentLang }}>
   function setupGiocoEngine() {
     const root = document.getElementById('jyrac-gioco-root');
     if (!root) return;
 
+    const IS_EN = currentLang === 'en';
+
     let DECK = [...CARDS];
     let CURRENT = null;
-    let GAME_SETTINGS = { players: "1人", difficulty: "normal" };
+    let GAME_SETTINGS = { players: IS_EN ? "1 Person" : "1人", difficulty: "normal" };
     let HAS_INCIDENT = true;
 
     const $ = sel => root.querySelector(sel);
@@ -482,7 +567,11 @@ const CH_CARDS = [
     }
 
     function makeCardHtml(c){
-      const catMaps = {dis:'災害・状況',time:'経過時間',fac:'施設・物資',peo:'避難者',con:'運営・情報',sup:'支援・対話'};
+      const catMaps = IS_EN ? {
+        dis:'Disaster/Status', time:'Time Elapsed', fac:'Facility/Supplies', peo:'Evacuees', con:'Ops/Info', sup:'Support/Dialogue'
+      } : {
+        dis:'災害・状況', time:'経過時間', fac:'施設・物資', peo:'避難者', con:'運営・情報', sup:'支援・対話'
+      };
       return `<div class="gcard c-${c.c}"><span class="emoji">${c.e}</span><div class="cat">${catMaps[c.c] || c.c}</div><div class="txt">${c.txt}</div></div>`;
     }
 
@@ -542,27 +631,38 @@ const CH_CARDS = [
 
     function situationText(cur){
       if(!cur) return '';
-      const pText = cur.people.map(p => `【${p.txt}】`).join('や');
-      return `【${cur.dis.txt}】のなか、発災から【${cur.time.txt}】が経過。避難所環境は【${cur.fac.txt}】という条件です。そこへ${pText}が避難しています。`;
+      if (IS_EN) {
+        const pText = cur.people.map(p => `[${p.txt}]`).join(' and ');
+        return `Under [${cur.dis.txt}], [${cur.time.txt}] passed. Shelter facilities: [${cur.fac.txt}]. Evacuees present: ${pText}.`;
+      } else {
+        const pText = cur.people.map(p => `【${p.txt}】`).join('や');
+        return `【${cur.dis.txt}】のなか、発災から【${cur.time.txt}】が経過。避難所環境は【${cur.fac.txt}】という条件です。そこへ${pText}が避難しています。`;
+      }
     }
 
     function buildStep2(e){
       if(e) e.preventDefault();
       if(!CURRENT) return;
       
-      const pText = CURRENT.people.map(p => p.txt).join(' ／ ');
+      const pText = CURRENT.people.map(p => p.txt).join(IS_EN ? ' / ' : ' ／ ');
       const step2SitText = $('#step2-sit-text');
       const qCardsBox = $('#q-cards-box');
       
       if(step2SitText) {
-        step2SitText.innerHTML = `外の状況：<b>${CURRENT.dis.txt}</b><br>時間の経過：<b>${CURRENT.time.txt}</b><br>使えるもの：<b>${CURRENT.fac.txt}</b><br>避難者の様子：<b>${pText}</b>`;
+        step2SitText.innerHTML = IS_EN 
+          ? `Outside Status: <b>${CURRENT.dis.txt}</b><br>Time Passed: <b>${CURRENT.time.txt}</b><br>Available Facilities: <b>${CURRENT.fac.txt}</b><br>Evacuees: <b>${pText}</b>`
+          : `外の状況：<b>${CURRENT.dis.txt}</b><br>時間の経過：<b>${CURRENT.time.txt}</b><br>使えるもの：<b>${CURRENT.fac.txt}</b><br>避難者の様子：<b>${pText}</b>`;
       }
       
       if(qCardsBox) {
+        const titleT = IS_EN ? '🚾 T: Toilet Issues' : '🚾 T トイレの課題';
+        const titleK = IS_EN ? '🍳 K: Kitchen Issues' : '🍳 K キッチンの課題';
+        const titleB = IS_EN ? '🛏️ B: Bed Issues' : '🛏️ B ベッドの課題';
+
         qCardsBox.innerHTML = `
-          <div class="q-card a"><h4>🚾 T トイレの課題</h4><ul><li>${sample(DISCUSSIONS.t)}</li></ul></div>
-          <div class="q-card b"><h4>🍳 K キッチンの課題</h4><ul><li>${sample(DISCUSSIONS.k)}</li></ul></div>
-          <div class="q-card c"><h4>🛏️ B ベッドの課題</h4><ul><li>${sample(DISCUSSIONS.b)}</li></ul></div>`;
+          <div class="q-card a"><h4>${titleT}</h4><ul><li>${sample(DISCUSSIONS.t)}</li></ul></div>
+          <div class="q-card b"><h4>${titleK}</h4><ul><li>${sample(DISCUSSIONS.k)}</li></ul></div>
+          <div class="q-card c"><h4>${titleB}</h4><ul><li>${sample(DISCUSSIONS.b)}</li></ul></div>`;
       }
       showView(2);
     }
@@ -581,14 +681,16 @@ const CH_CARDS = [
         if(incTag) {
           incTag.style.background = '#fde3e5';
           incTag.style.color = 'var(--red)';
-          incTag.textContent = 'トラブル対応';
+          incTag.textContent = IS_EN ? 'Incident Response' : 'トラブル対応';
         }
         if(incAlert) {
           incAlert.style.display = 'block';
           incAlert.style.background = '#fde3e5';
           incAlert.style.borderColor = 'var(--red)';
           incAlert.style.color = 'var(--red-deep)';
-          incAlert.innerHTML = '⚠️ <b>追加チャレンジ発生！</b> 運営ディスカッションを進める中、さらに以下のアクシデントや追加の運営問題が発生しました。どう乗り越えますか？';
+          incAlert.innerHTML = IS_EN
+            ? '⚠️ <b>Additional Challenge!</b> As discussion progressed, an additional incident occurred. How will you overcome this?'
+            : '⚠️ <b>追加チャレンジ発生！</b> 運営ディスカッションを進める中、さらに以下のアクシデントが発生しました。どう乗り越えますか？';
         }
         
         let pool = shuffle([...CH_CARDS]);
@@ -600,16 +702,18 @@ const CH_CARDS = [
         if(incTag) {
           incTag.style.background = '#eafaf1';
           incTag.style.color = 'var(--green)';
-          incTag.textContent = '比較的平穏';
+          incTag.textContent = IS_EN ? 'Relatively Calm' : '比較的平穏';
         }
         if(incAlert) {
           incAlert.style.display = 'block';
           incAlert.style.background = '#eafaf1';
           incAlert.style.borderColor = 'var(--green)';
           incAlert.style.color = 'var(--green-deep)';
-          incAlert.innerHTML = '🍀 <b>追加アクシデントは発生しませんでした。</b> 現在の体制維持と、次の時間経過に向けた運営の効率化を話し合ってください。';
+          incAlert.innerHTML = IS_EN
+            ? '🍀 <b>No additional incident occurred.</b> Discuss maintaining current operations and streamlining management for the next timeframe.'
+            : '🍀 <b>追加アクシデントは発生しませんでした。</b> 現在の体制維持と、次の時間経過に向けた運営の効率化を話し合ってください。';
         }
-        if(chCardsBox) chCardsBox.innerHTML = '<div style="padding:20px; font-weight:700; color:var(--ink-soft);">追加のトラブルはありません。</div>';
+        if(chCardsBox) chCardsBox.innerHTML = `<div style="padding:20px; font-weight:700; color:var(--ink-soft);">${IS_EN ? 'No additional troubles.' : '追加のトラブルはありません。'}</div>`;
       }
       showView(3);
     }
@@ -627,7 +731,7 @@ const CH_CARDS = [
       const d = collectMemo();
       root.querySelectorAll('.content[data-r]').forEach(el => {
         const v = d[el.dataset.r];
-        el.textContent = v || '（未入力）';
+        el.textContent = v || (IS_EN ? '(Not entered)' : '（未入力）');
         if(!v) el.classList.add('empty'); else el.classList.remove('empty');
       });
     }
@@ -635,10 +739,53 @@ const CH_CARDS = [
     function copyReview(e) {
       if(e) e.preventDefault();
       const d = collectMemo();
-      const sit = CURRENT ? situationText(CURRENT) : '（シチュエーション未作成）';
-      const text = `【HUG Gioco ワーク記録シート】\nプレイ人数:${GAME_SETTINGS.players} / 難易度:${GAME_SETTINGS.difficulty}\n\n■状況\n${sit}\n\n■課題\n${d.issues||'-'}\n\n■配慮\n${d.care||'-'}\n\n■対応\n${d.now||'-'}\n\n■準備\n${d.prep||'-'}\n\n■感想・提案\n${d.propose||'-'}`;
+      const sit = CURRENT ? situationText(CURRENT) : (IS_EN ? '(Scenario not created)' : '（シチュエーション未作成）');
+      
+      const text = IS_EN ?
+`[HUG Gioco Worksheet Record]
+Players: ${GAME_SETTINGS.players} / Difficulty: ${GAME_SETTINGS.difficulty}
+
+■ Scenario
+${sit}
+
+■ Expected Challenges
+${d.issues||'-'}
+
+■ Special Considerations
+${d.care||'-'}
+
+■ Immediate Action
+${d.now||'-'}
+
+■ Advance Preparation
+${d.prep||'-'}
+
+■ Reflections / Proposals
+${d.propose||'-'}`
+:
+`【HUG Gioco ワーク記録シート】
+プレイ人数:${GAME_SETTINGS.players} / 難易度:${GAME_SETTINGS.difficulty}
+
+■状況
+${sit}
+
+■課題
+${d.issues||'-'}
+
+■配慮
+${d.care||'-'}
+
+■対応
+${d.now||'-'}
+
+■準備
+${d.prep||'-'}
+
+■感想・提案
+${d.propose||'-'}`;
+
       navigator.clipboard.writeText(text).then(() => {
-        showToast('📋 クリップボードにコピーしました！');
+        showToast(IS_EN ? '📋 Copied to clipboard!' : '📋 クリップボードにコピーしました！');
       });
     }
 
@@ -648,9 +795,9 @@ const CH_CARDS = [
       const sSit = $('#s-sit');
       const sProp = $('#s-prop');
 
-      if(sMeta) sMeta.textContent = `${GAME_SETTINGS.players} ／ 難易度: ${GAME_SETTINGS.difficulty}`;
+      if(sMeta) sMeta.textContent = `${GAME_SETTINGS.players} / ${IS_EN ? 'Difficulty' : '難易度'}: ${GAME_SETTINGS.difficulty}`;
       if(sSit) sSit.textContent = CURRENT ? situationText(CURRENT) : '';
-      if(sProp) sProp.textContent = d.propose || '（未入力）';
+      if(sProp) sProp.textContent = d.propose || (IS_EN ? '(Not entered)' : '（未入力）');
     }
 
     function submitToSpreadsheet(e) {
@@ -658,7 +805,7 @@ const CH_CARDS = [
       
       buildSuccessScreen();
       showView(5);
-      showToast('☁️ データを送信しました！');
+      showToast(IS_EN ? '☁️ Data submitted!' : '☁️ データを送信しました！');
 
       const d = collectMemo();
       const sit = CURRENT ? situationText(CURRENT) : '';
@@ -677,7 +824,7 @@ const CH_CARDS = [
       const WEBHOOK_URL = "https://script.google.com/macros/s/AKfycbz08QcBxBqNCqrbp6zqeT0kPDgyhRE6bepihXxqITuCA_-9mt5ByIcr65qqlDirCrZR/exec";
 
       if(WEBHOOK_URL.includes("XXXXXXXXXXXXXXXXXXXXXX")) {
-        console.log("スプレッドシート送信データ(ダミー):", payload);
+        console.log("Spreadsheet Data (Dummy):", payload);
         return;
       }
 
@@ -686,7 +833,7 @@ const CH_CARDS = [
         mode: "no-cors",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload)
-      }).catch(err => console.error("GAS送信エラー（バックグラウンド）:", err));
+      }).catch(err => console.error("GAS Submit Error:", err));
     }
 
     function showToast(msg) {
@@ -724,7 +871,10 @@ const CH_CARDS = [
         case 'btn-print':          e.preventDefault(); window.print(); break;
         case 'btn-submit-sheet':   submitToSpreadsheet(e); break;
         case 'btn-restart':
-        case 'btn-finish-restart': e.preventDefault(); if(confirm('新しくゲームをはじめますか？')) startTool(); break;
+        case 'btn-finish-restart': 
+          e.preventDefault(); 
+          if(confirm(IS_EN ? 'Start a new game?' : '新しくゲームをはじめますか？')) startTool(); 
+          break;
       }
     };
 
