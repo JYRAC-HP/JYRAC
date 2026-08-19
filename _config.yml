@@ -1,1 +1,2 @@
-exclude: [CLAUDE.md]
+exclude:
+  - CLAUDE.md
