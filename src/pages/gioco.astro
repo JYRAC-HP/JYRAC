@@ -1,23 +1,52 @@
 ---
 // src/pages/gioco.astro
 import Layout from '../layouts/Layout.astro';
+import { translations, type Lang } from '../lib/i18n';
+
+// URLから言語パラメーターを取得 (例: ?lang=en)
+const url = new URL(Astro.request.url);
+const currentLang: Lang = url.searchParams.get("lang") === "en" ? "en" : "ja";
+const t = translations[currentLang];
+
+// 言語に応じたクエリパラメータ（リンク維持用）
+const langParam = currentLang === 'en' ? '?lang=en' : '';
 ---
 
-<Layout title="HUG Gioco (教材) | 日本若者防災復興協会" currentTab="gioco">
+<Layout 
+  title={currentLang === 'en' ? 'HUG Gioco (Learning Tool) | JYRAC' : 'HUG Gioco (教材) | 日本若者防災復興協会'} 
+  currentTab="gioco"
+>
   <div class="gioco-intro-wrapper">
     <div class="content-panel">
       
-      <div class="title-badge">JYRAC独自開発デジタル教材</div>
-      <h2>HUG Gioco <span class="sub-title">— TKB型避難所運営ディスカッションゲーム</span></h2>
+      <div class="title-badge">
+        {currentLang === 'en' ? 'JYRAC Original Digital Educational Tool' : 'JYRAC独自開発デジタル教材'}
+      </div>
+
+      <h2>
+        HUG Gioco 
+        <span class="sub-title">
+          {currentLang === 'en' 
+            ? '— TKB-Type Evacuation Shelter Management Discussion Game' 
+            : '— TKB型避難所運営ディスカッションゲーム'}
+        </span>
+      </h2>
       
       <div class="info-card-box">
         <div class="intro-text">
           <p class="main-lead">
-            <strong>カードが織りなす「もしも」の避難所環境。<br>問いを見つけ、みんなで話し合い、地域を動かす次世代の防災ゲーム。</strong>
+            {currentLang === 'en' ? (
+              <strong>Card-driven "What if" shelter environments.<br>Discover questions, discuss together, and drive local action in a next-gen disaster prevention game.</strong>
+            ) : (
+              <strong>カードが織りなす「もしも」の避難所環境。<br>問いを見つけ、みんなで話し合い、地域を動かす次世代の防災ゲーム。</strong>
+            )}
           </p>
           <p class="desc">
-            「HUG Gioco（ジョーコ）」は、避難所の環境において極めて重要とされる<strong>TKB（トイレ・キッチン・ベッド）</strong>をテーマに、子どもから大人まで直感的に学べるオンライン対話型シミュレーションゲームです。<br><br>
-            ランダムに生成される災害状況や避難者のニーズに対して「何が大変？」「どう対応する？」をグループでディスカッション。正解を当てるのではなく、みんなで考えるべき『問い』を発見していく勝ち負けのないゲームです。
+            {currentLang === 'en' ? (
+              <>"HUG Gioco" is an online interactive simulation game that enables players from children to adults to intuitively learn about <strong>TKB (Toilets, Kitchens, Beds)</strong>—elements critical for evacuation shelter management.<br><br>Group members discuss randomly generated disaster situations and evacuees' needs ("What is difficult?", "How should we respond?"). Rather than guessing the right answer, this is a non-competitive game where players discover "questions" that everyone should think through together.</>
+            ) : (
+              <>「HUG Gioco（ジョーコ）」は、避難所の環境において極めて重要とされる<strong>TKB（トイレ・キッチン・ベッド）</strong>をテーマに、子どもから大人まで直感的に学べるオンライン対話型シミュレーションゲームです。<br><br>ランダムに生成される災害状況や避難者のニーズに対して「何が大変？」「どう対応する？」をグループでディスカッション。正解を当てるのではなく、みんなで考えるべき『問い』を発見していく勝ち負けのないゲームです。</>
+            )}
           </p>
         </div>
 
@@ -25,31 +54,49 @@ import Layout from '../layouts/Layout.astro';
           <div class="feature-item">
             <span class="f-emoji">🎮</span>
             <div>
-              <strong>人数・難易度選択</strong>
-              <p>個人ワークから大人数の研修、初心者向けから修羅場の上級モードまで対応。</p>
+              <strong>{currentLang === 'en' ? 'Select Group Size & Difficulty' : '人数・難易度選択'}</strong>
+              <p>
+                {currentLang === 'en' 
+                  ? 'Supports individual work, large workshops, beginner modes, and intense advanced scenarios.' 
+                  : '個人ワークから大人数の研修、初心者向けから修羅場の上級モードまで対応。'}
+              </p>
             </div>
           </div>
+
           <div class="feature-item">
             <span class="f-emoji">🚨</span>
             <div>
-              <strong>不定期アクシデント</strong>
-              <p>話し合いの途中で突発的なトラブルが発生。難易度に応じたリアルな運営判断を体験。</p>
+              <strong>{currentLang === 'en' ? 'Random Accidents' : '不定期アクシデント'}</strong>
+              <p>
+                {currentLang === 'en' 
+                  ? 'Sudden troubles occur during discussions. Experience realistic management decisions matched to the difficulty.' 
+                  : '話し合いの途中で突発的なトラブルが発生。難易度に応じたリアルな運営判断を体験。'}
+              </p>
             </div>
           </div>
+
           <div class="feature-item">
             <span class="f-emoji">☁️</span>
             <div>
-              <strong>デジタルふりかえり</strong>
-              <p>導き出したアイデアはその場で送信され、広報局の管理シートへ瞬時にデータ集約。</p>
+              <strong>{currentLang === 'en' ? 'Digital Reflection' : 'デジタルふりかえり'}</strong>
+              <p>
+                {currentLang === 'en' 
+                  ? 'Derived ideas are submitted instantly on the spot, automatically aggregated into management sheets.' 
+                  : '導き出したアイデアはその場で送信され、広報局の管理シートへ瞬時にデータ集約。'}
+              </p>
             </div>
           </div>
         </div>
 
         <div class="launch-zone">
-          <a href="/hug-gioco.html" class="btn-gioco-launch" target="_blank" rel="noopener">
-            🎲 HUG Gioco を起動する ➔
+          <a href={`/hug-gioco.html${langParam}`} class="btn-gioco-launch" target="_blank" rel="noopener">
+            {currentLang === 'en' ? '🎲 Launch HUG Gioco ➔' : '🎲 HUG Gioco を起動する ➔'}
           </a>
-          <p class="launch-note">※別ウィンドウでゲームが起動します。PC・スマホ・タブレットのいずれでもプレイ可能です。</p>
+          <p class="launch-note">
+            {currentLang === 'en' 
+              ? '*The game will launch in a new window. Playable on PC, smartphone, or tablet.' 
+              : '※別ウィンドウでゲームが起動します。PC・スマホ・タブレットのいずれでもプレイ可能です。'}
+          </p>
         </div>
 
       </div>
