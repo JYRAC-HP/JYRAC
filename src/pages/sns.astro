@@ -1,55 +1,81 @@
 ---
+// src/pages/sns.astro
 import Layout from '../layouts/Layout.astro';
+import { translations, type Lang } from '../lib/i18n';
+
+// URLから言語パラメーターを取得 (例: ?lang=en)
+const url = new URL(Astro.request.url);
+const currentLang: Lang = url.searchParams.get("lang") === "en" ? "en" : "ja";
+const t = translations[currentLang];
 
 // 1. DATA LAYER (SNSリンクのURLや文言を一元管理)
 const jyracSns = [
   {
     type: "x",
-    title: "X (旧Twitter) ➔",
+    title: "X (formerly Twitter) ➔",
     url: "https://x.com/jyrac_official",
-    desc: "JYRAC法人の公式プレス、お知らせ、ニュースなどをテキストで発信しています。"
+    desc: currentLang === 'en' 
+      ? 'Official press releases, announcements, and news from JYRAC.' 
+      : 'JYRAC法人の公式プレス、お知らせ、ニュースなどをテキストで発信しています。'
   },
   {
     type: "instagram",
     title: "Instagram ➔",
     url: "https://www.instagram.com/jyrac_official",
-    desc: "活動報告やNSFとの共同投稿などを、写真やリール動画で投稿しています。"
+    desc: currentLang === 'en'
+      ? 'Activity reports and joint posts with NSF shared via photos and Reels videos.'
+      : '活動報告やNSFとの共同投稿などを、写真やリール動画で投稿しています。'
   },
   {
     type: "note",
-    title: "note (※JYRACのみ) ➔",
+    title: currentLang === 'en' ? 'note (JYRAC Only) ➔' : 'note (※JYRACのみ) ➔',
     url: "https://note.com/jyrac_official",
-    desc: "防災・復興に対する代表や役員の想い、活動の背景にあるストーリーをコラム形式などで発信しています。"
+    desc: currentLang === 'en'
+      ? 'Columns and background stories sharing thoughts on disaster prevention from our representatives.'
+      : '防災・復興に対する代表や役員の想い、活動の背景にあるストーリーをコラム形式などで発信しています。'
   }
 ];
 
 const nsfSns = [
   {
     type: "x",
-    title: "X (旧Twitter) ➔",
+    title: "X (formerly Twitter) ➔",
     url: "https://x.com/nsf_project",
-    desc: "お知らせ、ニュースなどをに発信しています。"
+    desc: currentLang === 'en'
+      ? 'Sharing news, project updates, and announcements.'
+      : 'お知らせ、ニュースなどをに発信しています。'
   },
   {
     type: "instagram",
     title: "Instagram ➔",
     url: "https://www.instagram.com/nsf_project",
-    desc: "活動報告や、JYRAC、各種プロジェクトと共同投稿やイベント告知などを発信しています。"
+    desc: currentLang === 'en'
+      ? 'Activity reports, joint posts with JYRAC and various projects, and event announcements.'
+      : '活動報告や、JYRAC、各種プロジェクトと共同投稿やイベント告知などを発信しています。'
   }
 ];
 ---
 
-<Layout title="公式SNS一覧 | 日本若者防災復興協会" currentTab="sns">
+<Layout 
+  title={currentLang === 'en' ? 'Official SNS List | Japan Youth Resilience Action Consortium' : '公式SNS一覧 | 日本若者防災復興協会'} 
+  currentTab="sns"
+>
   <div class="content-panel">
-    <h2>公式SNS一覧</h2>
+    <h2>
+      {currentLang === 'en' ? 'Official SNS List' : '公式SNS一覧'}
+    </h2>
     <p class="lead-text">
-      日本若者防災復興協会（JYRAC）、および傘下のNSF PROJECTsの公式SNSアカウント一覧です。活動のリアルタイム進捗や、若者目線での防災・減災を目指し発信しています。
+      {currentLang === 'en'
+        ? 'A list of official SNS accounts for Japan Youth Resilience Action Consortium (JYRAC) and its affiliated NSF PROJECTs. We share real-time activity progress and disaster prevention insights from a youth perspective.'
+        : '日本若者防災復興協会（JYRAC）、および傘下のNSF PROJECTsの公式SNSアカウント一覧です。活動のリアルタイム進捗や、若者目線での防災・減災を目指し発信しています。'}
     </p>
     
-    <h3 class="sns-group-title">🏢 日本若者防災復興協会（JYRAC）</h3>
+    <h3 class="sns-group-title">
+      🏢 {currentLang === 'en' ? 'Japan Youth Resilience Action Consortium (JYRAC)' : '日本若者防災復興協会（JYRAC）'}
+    </h3>
     <div class="sns-grid sns-grid-triple">
       {jyracSns.map((sns) => (
-        <a href={sns.url} class={`sns-card sns-${sns.type}`} target="_blank" rel="noopener">
+        <a href={sns.url} class={`sns-card sns-${sns.type}`} target="_blank" rel="noopener noreferrer">
           <h4>{sns.title}</h4>
           <p>{sns.desc}</p>
         </a>
@@ -59,7 +85,7 @@ const nsfSns = [
     <h3 class="sns-group-title" style="margin-top: 45px;">🎓 NSF PROJECTs</h3>
     <div class="sns-grid">
       {nsfSns.map((sns) => (
-        <a href={sns.url} class={`sns-card sns-${sns.type}`} target="_blank" rel="noopener">
+        <a href={sns.url} class={`sns-card sns-${sns.type}`} target="_blank" rel="noopener noreferrer">
           <h4>{sns.title}</h4>
           <p>{sns.desc}</p>
         </a>
