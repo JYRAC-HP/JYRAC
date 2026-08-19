@@ -1,18 +1,40 @@
 ---
 // src/pages/contact.astro
 import Layout from '../layouts/Layout.astro';
+import { translations, type Lang } from '../lib/i18n';
+
+// URLから言語パラメーターを取得 (例: ?lang=en)
+const url = new URL(Astro.request.url);
+const currentLang: Lang = url.searchParams.get("lang") === "en" ? "en" : "ja";
+const t = translations[currentLang];
 ---
 
-<Layout title="お問い合わせ | 日本若者防災復興協会" currentTab="contact">
+<Layout 
+    title={currentLang === 'en' ? 'Contact Us | Japan Youth Resilience Action Consortium' : 'お問い合わせ | 日本若者防災復興協会'} 
+    currentTab="contact"
+>
     <div class="content-panel">
-        <h2>お問い合わせ</h2>
-        <p>当団体へのご質問、活動へのご参加希望、取材・協賛のご依頼などは、下記の公式お問い合わせフォーム（Googleフォーム）よりお気軽にご連絡ください。</p>
+        <h2>
+            {currentLang === 'en' ? 'Contact Us' : 'お問い合わせ'}
+        </h2>
+        
+        <p>
+            {currentLang === 'en'
+                ? 'For inquiries, joining our activities, press/media, or sponsorship requests, please feel free to contact us via our official Google Form below.'
+                : '当団体へのご質問、活動へのご参加希望、取材・協賛のご依頼などは、下記の公式お問い合わせフォーム（Googleフォーム）よりお気軽にご連絡ください。'}
+        </p>
         
         <div style="text-align: center; margin: 45px 0;">
-            <a href="https://forms.gle/aJGpNosn9FEYdaEG8" target="_blank" class="google-form-btn">
-                お問い合わせフォームを開く（Googleフォーム） ➔
+            <a href="https://forms.gle/aJGpNosn9FEYdaEG8" target="_blank" rel="noopener noreferrer" class="google-form-btn">
+                {currentLang === 'en'
+                    ? 'Open Contact Form (Google Form) ➔'
+                    : 'お問い合わせフォームを開く（Googleフォーム） ➔'}
             </a>
-            <p style="font-size: 12px; color: #7f8c8d; margin-top: 12px;">※外部サイト（Googleフォーム）のウインドウが開きます。</p>
+            <p style="font-size: 12px; color: #7f8c8d; margin-top: 12px;">
+                {currentLang === 'en'
+                    ? '*Opens in an external window (Google Forms).'
+                    : '※外部サイト（Googleフォーム）のウインドウが開きます。'}
+            </p>
         </div>
     </div>
 </Layout>
