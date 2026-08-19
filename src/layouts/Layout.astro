@@ -1,13 +1,19 @@
 ---
+import { getLangFromUrl, useTranslations } from '../lib/i18n';
+
 interface Props {
   title: string;
   currentTab: 'news' | 'about' | 'services' | 'recruitment' | 'governance' | 'sns' | 'contact' | 'gioco'; 
 }
 
 const { title, currentTab } = Astro.props;
+
+const currentLang = getLangFromUrl(Astro.url);
+const t = useTranslations(currentLang);
+const langParam = currentLang === 'en' ? '?lang=en' : '';
 ---
 <!DOCTYPE html>
-<html lang="ja">
+<html lang={currentLang}>
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -104,6 +110,9 @@ const { title, currentTab } = Astro.props;
         .header-container {
             max-width: 1200px;
             margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
         }
         .brand-zone h1 {
             margin: 0;
@@ -128,6 +137,29 @@ const { title, currentTab } = Astro.props;
             font-weight: 700;
             letter-spacing: 1px;
             margin-top: 2px;
+        }
+
+        .lang-switch {
+            display: flex;
+            gap: 4px;
+            background: rgba(0, 154, 166, 0.1);
+            padding: 4px;
+            border-radius: 20px;
+            border: 1px solid rgba(0, 154, 166, 0.2);
+        }
+        .lang-btn {
+            font-size: 12px;
+            font-weight: 700;
+            padding: 4px 12px;
+            border-radius: 14px;
+            text-decoration: none;
+            color: var(--navy);
+            transition: all 0.2s ease;
+        }
+        .lang-btn.active {
+            background: var(--primary);
+            color: #ffffff;
+            box-shadow: 0 2px 6px rgba(0, 154, 166, 0.3);
         }
 
         .dashboard-container {
@@ -287,7 +319,8 @@ const { title, currentTab } = Astro.props;
         }
 
         @media (max-width: 850px) {
-            header { padding: 20px; text-align: center; }
+            header { padding: 20px; }
+            .header-container { flex-direction: column; gap: 12px; text-align: center; }
             .dashboard-container { flex-direction: column; margin: 20px auto; gap: 24px; }
             aside { width: 100%; }
             .side-menu { display: grid; grid-template-columns: 1fr 1fr; border-radius: 16px; gap: 10px; }
@@ -308,8 +341,12 @@ const { title, currentTab } = Astro.props;
 <header>
     <div class="header-container">
         <div class="brand-zone">
-            <h1>日本若者防災復興協会<span>特定非営利活動法人</span></h1>
-            <div class="subtitle">Japan Youth Resilience Action Consortium (JYRAC)</div>
+            <h1>{t.brand.name}<span>{t.brand.tag}</span></h1>
+            <div class="subtitle">{t.brand.sub}</div>
+        </div>
+        <div class="lang-switch">
+            <a href="?lang=ja" class={`lang-btn ${currentLang === 'ja' ? 'active' : ''}`}>日本語</a>
+            <a href="?lang=en" class={`lang-btn ${currentLang === 'en' ? 'active' : ''}`}>English</a>
         </div>
     </div>
 </header>
@@ -317,26 +354,26 @@ const { title, currentTab } = Astro.props;
 <div class="dashboard-container">
     <aside>
         <ul class="side-menu">
-            <li><a href="/" class={`menu-btn ${currentTab === 'news' ? 'active' : ''}`}>ホーム / 新着情報</a></li>
-            <li><a href="/about" class={`menu-btn ${currentTab === 'about' ? 'active' : ''}`}>当法人について</a></li>
-            <li><a href="/services" class={`menu-btn ${currentTab === 'services' ? 'active' : ''}`}>事業内容・活動</a></li>
-            <li><a href="/recruitment" class={`menu-btn ${currentTab === 'recruitment' ? 'active' : ''}`}>メンバー募集</a></li>
-            <li><a href="/gioco" class={`menu-btn ${currentTab === 'gioco' ? 'active' : ''}`}>HUG Gioco (教材)</a></li>
-            <li><a href="/governance" class={`menu-btn ${currentTab === 'governance' ? 'active' : ''}`}>情報公開・設立公告</a></li>
-            <li><a href="/sns" class={`menu-btn ${currentTab === 'sns' ? 'active' : ''}`}>公式SNS一覧</a></li>
-            <li><a href="/contact" class={`menu-btn ${currentTab === 'contact' ? 'active' : ''}`}>お問い合わせ</a></li>
+            <li><a href={`/${langParam}`} class={`menu-btn ${currentTab === 'news' ? 'active' : ''}`}>{t.nav.news}</a></li>
+            <li><a href={`/about${langParam}`} class={`menu-btn ${currentTab === 'about' ? 'active' : ''}`}>{t.nav.about}</a></li>
+            <li><a href={`/services${langParam}`} class={`menu-btn ${currentTab === 'services' ? 'active' : ''}`}>{t.nav.services}</a></li>
+            <li><a href={`/recruitment${langParam}`} class={`menu-btn ${currentTab === 'recruitment' ? 'active' : ''}`}>{t.nav.recruitment}</a></li>
+            <li><a href={`/gioco${langParam}`} class={`menu-btn ${currentTab === 'gioco' ? 'active' : ''}`}>{t.nav.gioco}</a></li>
+            <li><a href={`/governance${langParam}`} class={`menu-btn ${currentTab === 'governance' ? 'active' : ''}`}>{t.nav.governance}</a></li>
+            <li><a href={`/sns${langParam}`} class={`menu-btn ${currentTab === 'sns' ? 'active' : ''}`}>{t.nav.sns}</a></li>
+            <li><a href={`/contact${langParam}`} class={`menu-btn ${currentTab === 'contact' ? 'active' : ''}`}>{t.nav.contact}</a></li>
         </ul>
     </aside>
 
     <main id="main-panel" class={Astro.url.pathname.includes('hug-gioco') ? 'layout-gioco-mode' : ''}>
         {currentTab === 'gioco' && !Astro.url.pathname.includes('hug-gioco') ? (
             <div class="content-panel">
-                <h2>HUG Gioco — TKB型避難所運営ディスカッションゲーム</h2>
+                <h2>{t.gioco.title}</h2>
                 <div class="info-card-box">
-                    <p>「HUG Gioco（ジョーコ）」は、TKB（トイレ・キッチン・ベッド）型避難所運営をテーマにした、子どもから大人まで直感的に学べる防災シミュレーションゲームです。</p>
+                    <p>{t.gioco.desc}</p>
                     <div style="text-align: center; margin: 40px 0;">
-                        <a href="/hug-gioco" class="btn-gioco-launch">
-                            🚀 ゲームを起動する ➔
+                        <a href={`/hug-gioco${langParam}`} class="btn-gioco-launch">
+                            {t.gioco.launch}
                         </a>
                     </div>
                 </div>
@@ -348,7 +385,7 @@ const { title, currentTab } = Astro.props;
 </div>
 
 <footer>
-    <p>&copy; 2026 特定非営利活動法人日本若者防災復興協会 All Rights Reserved.</p>
+    <p>{t.footer.copyright}</p>
 </footer>
 
 <script is:inline>
@@ -370,8 +407,28 @@ const { title, currentTab } = Astro.props;
         }
     }
 
-    document.addEventListener("DOMContentLoaded", runJyracGsapAnimation);
-    document.addEventListener("astro:page-load", runJyracGsapAnimation);
+    function applyI18nLinks() {
+        const urlParams = new URLSearchParams(window.location.search);
+        const currentLang = urlParams.get('lang');
+        if (currentLang === 'en') {
+            document.querySelectorAll('a[href]').forEach(link => {
+                const href = link.getAttribute('href');
+                if (href && href.startsWith('/') && !href.includes('lang=')) {
+                    const separator = href.includes('?') ? '&' : '?';
+                    link.setAttribute('href', href + separator + 'lang=en');
+                }
+            });
+        }
+    }
+
+    document.addEventListener("DOMContentLoaded", () => {
+        runJyracGsapAnimation();
+        applyI18nLinks();
+    });
+    document.addEventListener("astro:page-load", () => {
+        runJyracGsapAnimation();
+        applyI18nLinks();
+    });
 </script>
 <script type='module' src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "cec25f9117274a519150136e7a35a0d9"}'></script>
 </body>
