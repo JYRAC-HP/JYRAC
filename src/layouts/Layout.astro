@@ -11,6 +11,9 @@ const { title, currentTab } = Astro.props;
 const currentLang = getLangFromUrl(Astro.url);
 const t = useTranslations(currentLang);
 const langParam = currentLang === 'en' ? '?lang=en' : '';
+
+// 現在のページのパスを取得
+const currentPath = Astro.url.pathname;
 ---
 <!DOCTYPE html>
 <html lang={currentLang}>
@@ -345,8 +348,9 @@ const langParam = currentLang === 'en' ? '?lang=en' : '';
             <div class="subtitle">{t.brand.sub}</div>
         </div>
         <div class="lang-switch">
-            <a href="?lang=ja" class={`lang-btn ${currentLang === 'ja' ? 'active' : ''}`}>日本語</a>
-            <a href="?lang=en" class={`lang-btn ${currentLang === 'en' ? 'active' : ''}`}>English</a>
+            <!-- 現在のパスを維持したまま言語を切替 -->
+            <a href={`${currentPath}?lang=ja`} class={`lang-btn ${currentLang === 'ja' ? 'active' : ''}`}>日本語</a>
+            <a href={`${currentPath}?lang=en`} class={`lang-btn ${currentLang === 'en' ? 'active' : ''}`}>English</a>
         </div>
     </div>
 </header>
@@ -407,12 +411,14 @@ const langParam = currentLang === 'en' ? '?lang=en' : '';
         }
     }
 
+    // 内部リンクに自動で ?lang=en を付与する処理
     function applyI18nLinks() {
         const urlParams = new URLSearchParams(window.location.search);
         const currentLang = urlParams.get('lang');
         if (currentLang === 'en') {
             document.querySelectorAll('a[href]').forEach(link => {
                 const href = link.getAttribute('href');
+                // 内部絶対パスかつlang設定が含まれていないリンクのみ対象
                 if (href && href.startsWith('/') && !href.includes('lang=')) {
                     const separator = href.includes('?') ? '&' : '?';
                     link.setAttribute('href', href + separator + 'lang=en');
