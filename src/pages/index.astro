@@ -9,9 +9,9 @@ const currentLang: Lang = url.searchParams.get("lang") === "en" ? "en" : "ja";
 const t = translations[currentLang];
 const langParam = currentLang === 'en' ? '?lang=en' : '';
 
-// ベースパスの自動解決 (末尾のスラッシュ重複を防止)
+// public直下のファイルを参照 (ベースパス対応)
 const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, '');
-const logoSrc = `${baseUrl}/images/JYRAC.jpg`;
+const logoSrc = `${baseUrl}/JYRAC.jpg`;
 
 // 言語に応じたニュース記事データ
 const newsArticles = [
