@@ -9,6 +9,10 @@ const currentLang: Lang = url.searchParams.get("lang") === "en" ? "en" : "ja";
 const t = translations[currentLang];
 const langParam = currentLang === 'en' ? '?lang=en' : '';
 
+// ベースパスの自動解決 (末尾のスラッシュ重複を防止)
+const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, '');
+const logoSrc = `${baseUrl}/images/JYRAC.jpg`;
+
 // 言語に応じたニュース記事データ
 const newsArticles = [
   {
@@ -86,9 +90,11 @@ const newsArticles = [
       <!-- ロゴ画像 -->
       <div class="header-logo-wrap">
         <img 
-          src="/images/JYRAC.jpg" 
+          src={logoSrc} 
           alt="特定非営利活動法人 日本若者防災復興協会 JYRAC" 
           class="header-logo"
+          loading="eager"
+          decoding="async"
         />
       </div>
 
@@ -106,7 +112,6 @@ const newsArticles = [
     <div class="news-list">
       {newsArticles.map((article) => (
         article.hasLink ? (
-          /* 【リンクあり】カード（ホバーでふわっと浮く） */
           <div class={`news-card ${article.badgeClass === 'badge-urgent' ? 'card-urgent' : 'card-link'}`}>
             <div class="card-header">
               <span class={`badge ${article.badgeClass}`}>{article.category}</span>
@@ -123,7 +128,6 @@ const newsArticles = [
             </div>
           </div>
         ) : (
-          /* 【通常・リンクなし】カード */
           <div class="news-card card-normal">
             <div class="card-header">
               <span class={`badge ${article.badgeClass}`}>{article.category}</span>
@@ -140,7 +144,6 @@ const newsArticles = [
 </Layout>
 
 <style>
-  /* JYRAC完全対応・崩れ防止専用CSS */
   .news-page-container {
     max-width: 800px;
     margin: 0 auto;
@@ -162,11 +165,14 @@ const newsArticles = [
     display: flex;
     justify-content: center;
     align-items: center;
+    min-height: 50px;
   }
 
   .header-logo {
+    width: auto;
     max-width: 220px;
     height: auto;
+    max-height: 90px;
     object-fit: contain;
     display: block;
   }
@@ -204,7 +210,6 @@ const newsArticles = [
     gap: 20px;
   }
 
-  /* 共通カードスタイル ＆ ふわっと浮くアニメーション設定 */
   .news-card {
     border-radius: 16px;
     padding: 24px;
@@ -228,7 +233,7 @@ const newsArticles = [
     border-color: #c53030;
   }
 
-  /* リンク付き通常カード（青枠ホバー） */
+  /* リンク付き通常カード */
   .card-link {
     background: #ffffff;
     border: 1.5px solid #009aa6;
@@ -241,7 +246,7 @@ const newsArticles = [
     border-color: #002b54;
   }
 
-  /* 通常カード（グレー・リンクなし） */
+  /* 通常カード（リンクなし） */
   .card-normal {
     background: #f8fafc;
     border: 1px solid rgba(0, 154, 166, 0.15);
@@ -255,7 +260,7 @@ const newsArticles = [
     box-shadow: 0 8px 20px rgba(0, 43, 84, 0.08);
   }
 
-  /* カードヘッダー (バッジ & 日付) */
+  /* カードヘッダー */
   .card-header {
     display: flex;
     align-items: center;
@@ -263,7 +268,6 @@ const newsArticles = [
     margin-bottom: 12px;
   }
 
-  /* ★【グラデーションバッジ共通スタイル】★ */
   .badge {
     font-size: 11px;
     font-weight: 800;
@@ -275,19 +279,16 @@ const newsArticles = [
     line-height: 1.2;
   }
 
-  /* 緊急募集：赤〜オレンジの立体グラデーション */
   .badge-urgent {
     background: linear-gradient(135deg, #ff4b4b 0%, #c53030 100%);
     box-shadow: 0 2px 8px rgba(229, 62, 62, 0.35);
   }
 
-  /* 募集：エメラルド〜ターコイズのグラデーション */
   .badge-recruitment {
     background: linear-gradient(135deg, #00d2e0 0%, #008f9b 100%);
     box-shadow: 0 2px 8px rgba(0, 180, 197, 0.35);
   }
 
-  /* お知らせ：ディープネイビー〜ブルーのグラデーション */
   .badge-info {
     background: linear-gradient(135deg, #0a4f8f 0%, #002b54 100%);
     box-shadow: 0 2px 8px rgba(0, 43, 84, 0.25);
@@ -299,7 +300,6 @@ const newsArticles = [
     color: #718096;
   }
 
-  /* タイトル */
   .card-title {
     font-size: 18px;
     font-weight: 800;
@@ -326,7 +326,6 @@ const newsArticles = [
     line-height: 1.4;
   }
 
-  /* サマリー文章 */
   .card-summary {
     font-size: 14px;
     color: #4a5568;
@@ -334,7 +333,6 @@ const newsArticles = [
     margin: 0;
   }
 
-  /* フッターリンク */
   .card-footer {
     margin-top: 16px;
     text-align: right;
